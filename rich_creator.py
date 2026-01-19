@@ -7,6 +7,13 @@ from rich.prompt import Prompt, IntPrompt
 from rich.progress import track
 import time
 
+age = 18
+terms = 0
+enemies = 0
+rivals = 0
+allies = 0
+
+
 def roll_2d6():
     return random.randint(1, 6) + random.randint(1, 6)
 
