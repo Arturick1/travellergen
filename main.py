@@ -29,7 +29,8 @@ def main():
     if draft_choice == "y":
         join_draft()
 
-    attempt_career()
+    else:
+        attempt_career()
 
     print_event_log()
 

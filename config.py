@@ -15,6 +15,7 @@ event_log = []
 prior_careers = 0
 drafted = False
 previously_drafted = False
+forced_drafted = False
 basic_training = True
 draft_options = {
         "Navy" : 1,
@@ -28,7 +29,7 @@ allies = 0
 enemies = 0
 rivals = 0
 contacts = 0
-qual = False
+qual = True
 qual_bonus = 0
 benefit_bonus = []
 advance_bonus = 0
@@ -42,6 +43,7 @@ starting_items = []
 ship_shares = 0
 auto_advance = False
 must_continue = False
+must_leave = False
 not_ejected = False
 keep_bonus = False
 lose_all_benefits = False
@@ -67,9 +69,15 @@ navy_terms = 0
 navy_rank = 0
 navy_nco_rank = 0
 navy_officer_rank = 0
+nobility_terms = 0
+nobility_rank = 0
 rogue_terms = 0
 rogue_rank = 0
 rogue_auto_qualify = False
+scholar_terms = 0
+scholar_rank = 0
+scout_terms = 0
+scout_rank = 0
 spec_name = None
 spec_table = None
 
@@ -353,10 +361,15 @@ def check_aging(debug=False):
 
 # Functions related to careers start here.
 
-def injury_roll_twice():
+def injury_roll_twice(high=False):
     roll1 = roll_1d6()
     roll2 = roll_1d6()
-    if roll1 < roll2:
+    if high:
+        if roll1 > roll2:
+            injury(roll1)
+        else:
+            injury(roll2)
+    elif roll1 < roll2:
         injury(roll1)
     else:
         injury(roll2)
@@ -509,7 +522,7 @@ def life_events(forced_roll=None):
     if event == 10:
         print("\nYou have good luck coming your way.  The cookie says so.  (+2 to a Benefit roll in the future)")
         event_log.append(f"{char_name} had a stroke... of good luck!")
-        benefit_bonus += 2
+        benefit_bonus.append(2)
 
     if event == 11:
         print("\nYou have been accused of a crime.  This may be because you committed a crime.  We don't judge.")
@@ -578,7 +591,7 @@ def increase_skill(skill, set_rank=None):
         event_log.append(f"You gained {skill} at rank {set_rank}.")
 
     elif set_rank is not None and skills[skill] >= 1:
-        print(f"You receive training in {skills[skill]} but it doesn't add anything of value.")
+        print(f"You receive training in {skill} but it doesn't add anything of value.")
     
     elif skills[skill] == None:
         skills[skill] = 0
@@ -730,7 +743,7 @@ def best_of_two(stat1, stat2):
         best = stat2
     return best
 
-def choose_science_skill():
+def choose_science_skill(set_rank=None):
     print("Choose which Science skill to improve:")
     print("1. Physical Sciences")
     print("2. Life Sciences")
@@ -745,7 +758,7 @@ def choose_science_skill():
         "Space Sciences"
     ]
     selected = science_skills[choice - 1]
-    increase_skill(selected)
+    increase_skill(selected, set_rank)
     event_log.append(f"Increased {selected} via Science (any)")
 
 def tas_member():
