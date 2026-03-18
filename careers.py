@@ -567,7 +567,7 @@ def cash_roll(career_table, career_rank):
 def car_drifter():
     global available_careers
     config.terms += 1
-    config.drifter_terms += 1
+    
 
     DRIFTER_MUSTER_CASH = {
         1: 0,
@@ -834,6 +834,7 @@ def car_drifter():
         drifter_mishap()
 
     if success:
+        config.drifter_terms += 1
         drifter_events()
         promotion = advance(*config.advancement_tuple, config.drifter_terms)
  
@@ -889,6 +890,7 @@ def car_drifter():
     else:
         config.prior_careers += 1
         drifter_muster()
+        config.drifter_terms = 0
 
     check_retirement()
 
@@ -1473,7 +1475,7 @@ def car_army():
         config.keep_bonus = False
         config.prior_careers += 1
         army_muster()
-        attempt_career()   
+        check_retirement()   
 
     def army_events():
         roll = roll_2d6()
@@ -1793,8 +1795,6 @@ def car_army():
 
 def car_citizen():
     global available_careers
-
-
 
     def citizen_muster():
         muster_rolls = config.citizen_terms
@@ -2164,10 +2164,7 @@ def car_entertainer():
             entertainer_mishap()
         elif roll == 3:
             log_and_print("You attend a controversial event or exhibition.")
-            if config.skills["Art"] > config.skills["Investigate"]:
-                result = skill_check("Art", best_mental())
-            else:
-                result = skill_check("Investigate", best_mental())
+            result = better_skill("Art", best_mental(), "Investigate", best_mental())
             if result >= 8:
                 log_and_print("You navigate the weirdness well and gain a Social Standing.")
                 config.values["Social Standing"] += 1
@@ -2205,10 +2202,7 @@ def car_entertainer():
             "2. Get into politics at risk to yourself", (1, 2))
             if choice == 2:
                 config.enemies += 1
-                if config.skills["Art"] > config.skills["Investigate"]:
-                    result = skill_check("Art", best_mental())
-                else:
-                    result = skill_check("Investigate", best_mental())
+                result = better_skill("Art", best_mental(), "Persuade", better_skill())
                 if result >= 8:
                     log_and_print("Your propaganda is effective, and you learn a few things.")
                 else:
@@ -2326,7 +2320,7 @@ def car_entertainer():
             config.advancement_tuple = ("Intelligence", 6)  
             config.event_log.append(f"Term{config.terms}: Entertainer: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in ENTERTAINER_ARTIST.values():
+                for effect in ENTERTAINER_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
@@ -2337,7 +2331,7 @@ def car_entertainer():
             config.advancement_tuple = ("Intelligence", 5)  
             config.event_log.append(f"Term{config.terms}: Entertainer: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in ENTERTAINER_JOURNALIST.values():
+                for effect in ENTERTAINER_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False    
     
@@ -2348,7 +2342,7 @@ def car_entertainer():
             config.advancement_tuple = ("Dexterity", 7)  
             config.event_log.append(f"Term{config.terms}: Entertainer: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in ENTERTAINER_PERFORMER.values():
+                for effect in ENTERTAINER_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
@@ -2578,7 +2572,7 @@ def car_marines():
         config.keep_bonus = False
         config.prior_careers += 1
         marines_muster()
-        attempt_career()   
+        check_retirement()   
 
     def marines_events():
         roll = roll_2d6()
@@ -3488,7 +3482,7 @@ def car_navy():
         config.keep_bonus = False
         config.prior_careers += 1
         navy_muster()
-        attempt_career()   
+        check_retirement()   
 
     def navy_events():
         roll = roll_2d6()
@@ -4130,7 +4124,7 @@ def car_nobility():
             config.advancement_tuple = ("Education", 6)  
             config.event_log.append(f"Term{config.terms}: Nobility: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in NOBILITY_ADMINISTRATOR.values():
+                for effect in NOBILITY_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
@@ -4141,7 +4135,7 @@ def car_nobility():
             config.advancement_tuple = ("Social Standing", 7)  
             config.event_log.append(f"Term{config.terms}: Nobility: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in NOBILITY_DIPLOMAT.values():
+                for effect in NOBILITY_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False    
     
@@ -4152,7 +4146,7 @@ def car_nobility():
             config.advancement_tuple = ("Intelligence", 8)  
             config.event_log.append(f"Term{config.terms}: Nobility: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in NOBILITY_DILETTANTE.values():
+                for effect in NOBILITY_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
@@ -4347,7 +4341,7 @@ def car_rogue():
             config.advancement_tuple = ("Dexterity", 6)  
             config.event_log.append(f"Term{config.terms}: Rogue: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in ROGUE_THIEF.values():
+                for effect in ROGUE_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
@@ -4358,7 +4352,7 @@ def car_rogue():
             config.advancement_tuple = ("Strength", 6)  
             config.event_log.append(f"Term{config.terms}: Rogue: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in ROGUE_ENFORCER.values():
+                for effect in ROGUE_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False    
     
@@ -4369,7 +4363,7 @@ def car_rogue():
             config.advancement_tuple = ("Intelligence", 6   )  
             config.event_log.append(f"Term{config.terms}: Rogue: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in ROGUE_PIRATE.values():
+                for effect in ROGUE_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
@@ -4647,12 +4641,12 @@ def car_scholar():
                 config.enemies += roll
                 print("But, you do learn a few things.")
                 skill_list = ["Physical Sciences", "Life Sciences", "Social Sciences", "Space Sciences"]
-                for num in range(len(skill_list)):
+                for num in range(1, len(skill_list) + 1):
                     print(f"{num}. {skill_list[num - 1]}")
                 choice = safe_int_input("Which skill will you advance?\n", (1, 4))
                 increase_skill(skill_list(choice - 1))
                 skill_list.remove(skill_list[choice - 1])
-                for num in range(len(skill_list)):
+                for num in range(1, len(skill_list) + 1):
                     print(f"{num}. {skill_list[num - 1]}")
                     choice = safe_int_input("Choose a second skill to advance:\n", (1, 3))
                     increase_skill(skill_list[choice - 1])
@@ -4663,13 +4657,13 @@ def car_scholar():
             log_and_print("You are assigned to work on a secret project for a patron or organization.")
             skill_list = ["Medic", "Any Science", "Engineer", "Computers", "Investigate"]
             print("Choose a skill to gain at Rank 1")
-            for num in range(len(skill_list)):
+            for num in range(1, len(skill_list) + 1):
                 print(f"{num}. {skill_list[num - 1]}")
             choice = safe_int_input("Which skill?\n", (1, 5))
             if choice == 2:
-                choose_science_skill(setrank=1)
+                choose_science_skill(set_rank=1)
             else:
-                increase_skill(skill_list[choice - 1], setrank=1)
+                increase_skill(skill_list[choice - 1], set_rank=1)
 
         elif roll == 5:
             log_and_print("You win a prestigious prize for your work, garnering both the praise and envy of your peers.")
@@ -4693,10 +4687,7 @@ def car_scholar():
             "2. Be a greedy research thief.", (1, 2))
             if choice == 2:
                 config.enemies += 1
-                if config.skills["Deception"] > config.skills["Admin"]:
-                    result = skill_check("Deception", best_mental())
-                else:
-                    result = skill_check("Admin", best_mental())
+                result = better_skill("Deception", best_mental(), "Admin", best_mental())
                 if result >= 8:
                     log_and_print("You've earned an enemy, but a number of benefits.")
                     increase_any_skill()
@@ -4829,7 +4820,7 @@ def car_scholar():
             config.advancement_tuple = ("Intelligence", 6)  
             config.event_log.append(f"Term{config.terms}: Scholar: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in SCHOLAR_FIELD_RESEARCHER.values():
+                for effect in SCHOLAR_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
@@ -4840,7 +4831,7 @@ def car_scholar():
             config.advancement_tuple = ("Intelligence", 8)  
             config.event_log.append(f"Term{config.terms}: Scholar: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in SCHOLAR_SCIENTIST.values():
+                for effect in SCHOLAR_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False    
     
@@ -4851,12 +4842,12 @@ def car_scholar():
             config.advancement_tuple = ("Education", 8)  
             config.event_log.append(f"Term{config.terms}: Scholar: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in SCHOLAR_PHYSICIAN.values():
+                for effect in SCHOLAR_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
     else:
-        print("You entertain the public for four years.")
+        print("You spend four more years with a microscope.")
         config.careers.append(f"Term{config.terms}: Scholar: {config.spec_name}.")
         config.event_log.append(f"Term{config.terms}: Scholar: {config.spec_name}")
     
@@ -5100,7 +5091,7 @@ def car_scout():
             log_and_print("You survey an alien world.")
             skill_list = ["Animals", "Survival", "Recon", "Life Sciences"]
             print("Choose a skill to gain at Rank 1")
-            for num in range(len(skill_list)):
+            for num in range(1, len(skill_list) + 1):
                 print(f"{num}. {skill_list[num - 1]}: Currently {config.skills[skill_list[num - 1]]}")
             choice = safe_int_input("Which skill?\n", (1, 4))
             increase_skill(skill_list[choice - 1], setrank=1)
@@ -5113,7 +5104,7 @@ def car_scout():
             log_and_print("You spend several years jumping from world to world in your scout ship.")
             skill_list = ["Animals", "Survival", "Recon", "Life Sciences"]
             print("Choose a skill to gain at Rank 1")
-            for num in range(len(skill_list)):
+            for num in range(1, len(skill_list) + 1):
                 print(f"{num}. {skill_list[num - 1]}: Currently {config.skills[skill_list[num - 1]]}")
             choice = safe_int_input("Which skill?\n", (1, 4))
             increase_skill(skill_list[choice - 1], setrank=1)
@@ -5123,10 +5114,7 @@ def car_scout():
 
         elif roll == 8:
             log_and_print("When dealing with an alien race, you have an opportunity to gather extra intelligence about them.")
-            if config.skills["Deception"] > config.skills["Sensors"]:
-                result = skill_check("Deception", best_mental())
-            else:
-                result = skill_check("Sensors", best_mental())
+            result = better_skill("Sensors", best_mental(), "Deception", best_mental())
             if result >= 8:
                 log_and_print("You get the intel, gain a loyal Ally in the Imperium, and get a bonus to advancement.")
                 config.allies += 1
@@ -5138,10 +5126,7 @@ def car_scout():
 
         elif roll == 9:
             log_and_print("Your scout ship is one of the first on the scene to rescue disaster survivors.")
-            if config.skills["Medic"] > config.skills["Engineer"]:
-                result = skill_check("Medic", best_mental())
-            else:
-                result = skill_check("Engineer", best_mental())
+            result = better_skill("Medic", best_mental(), "Engineer", best_mental())
             if result >= 8:
                 log_and_print("You are an excellent first responder, gaining a useful Contact and a commendation.")
                 config.advance_bonus += 2
@@ -5152,10 +5137,7 @@ def car_scout():
 
         elif roll == 10:
             log_and_print("You spend a great deal of time on the fringes of known space.")
-            if config.skills["Survival"] > config.skills["Pilot"]:
-                result = skill_check("Survival", best_mental())
-            else:
-                result = skill_check("Pilot", "Dexterity")
+            result = better_skill("Survival", best_mental(), "Pilot", "Dexterity")
             if result >= 8:
                 log_and_print("You gain an alien Contact and learn a few things.")
                 increase_any_skill()
@@ -5266,7 +5248,7 @@ def car_scout():
             config.advancement_tuple = ("Education", 9)  
             config.event_log.append(f"Term{config.terms}: Scout: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in SCOUT_COURIER.values():
+                for effect in SCOUT_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 
@@ -5277,7 +5259,7 @@ def car_scout():
             config.advancement_tuple = ("Intelligence", 8)  
             config.event_log.append(f"Term{config.terms}: Scout: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in SCOUT_SURVEY.values():
+                for effect in SCOUT_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False    
     
@@ -5288,7 +5270,7 @@ def car_scout():
             config.advancement_tuple = ("Education", 7)  
             config.event_log.append(f"Term{config.terms}: Scout: {config.spec_name}")
             if config.prior_careers < 1:
-                for effect in SCOUT_EXPLORATION.values():
+                for effect in SCOUT_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
 

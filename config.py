@@ -652,9 +652,32 @@ def skill_check(skill, mod):
         skill_result += skill_bonus + stat_bonus + rolled
         return skill_result
     skill_bonus += skills[skill]
-    print(f"Adding {skill} skill bonus of {skill_bonus}, {mod} bonus of {stat_bonus}, and dice roll of {rolled}")
     skill_result += skill_bonus + stat_bonus + rolled
+    print(f"Adding {skill} skill bonus of {skill_bonus}, {mod} bonus of {stat_bonus}, and dice roll of {rolled} for a total of {skill_result}")
     return skill_result    
+
+def better_skill(skill1, mod1, skill2, mod2):
+    modifier1 = 0
+    modifier2 = 0
+    if not skills[skill1]:
+        modifier1 = -3
+        modifier1 += mods[mod1]
+        if skills["Jack of all Trades"]:
+            modifier1 += min(skills["Jack of all Trades", 3])
+    else:
+        modifier1 += skills[skill1] + mods[mod1]
+    if not skills[skill2]:
+        modifier2 = -3
+        modifier2 += mods[mod2]
+        if skills["Jack of all Trades"]:
+            modifier2 += min(skills["Jack of all Trades", 3])
+    else:
+        modifier2 += skills[skill2] + mods[mod2]
+    if modifier1 > modifier2:
+        return skill_check(skill1, mod1)
+    else:
+        return skill_check(skill2, mod2)
+
 
 def safe_int_input(prompt, valid_range=None):
     """
