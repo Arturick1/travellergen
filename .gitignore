@@ -19,3 +19,6 @@ env/
 ENV/
 
 Characters/
+tkcreator.py
+rich_creator.py
+test_concept.py
