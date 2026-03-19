@@ -1,6 +1,7 @@
 import config
 from config import *
 
+
 def generate_planet():
     
     SIZES_GRAVITY = {

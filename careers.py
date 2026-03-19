@@ -103,7 +103,8 @@ CITIZEN_MUSTER_CASH = {
 
 def citizen_mishap():
     print("You have suffered a severe mishap.")
-    available_careers.remove("Citizen")
+    if not config.agent_undercover:
+        available_careers.remove("Citizen")
     roll = roll_1d6()
     if roll == 1:
         log_and_print("Injured on the job.")
@@ -320,7 +321,8 @@ ROGUE_MUSTER_CASH = {
 
 def rogue_mishap():
     print("You have suffered a severe mishap.")
-    available_careers.remove("Rogue")
+    if not config.agent_undercover:
+        available_careers.remove("Rogue")
     roll = roll_1d6()
     if roll == 1:
         log_and_print("Severely injured.")
@@ -1017,6 +1019,7 @@ def car_agent():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Agent")
             return
         if not config.keep_bonus:
             config.agent_terms -= 1
@@ -1042,7 +1045,7 @@ def car_agent():
                 result = skill_check("Investigate", best_mental())
             elif choice == 2:
                 result = skill_check("Streetwise", best_mental())
-            if result <= 8:
+            if result < 8:
                 print("That didn't go well.")
                 config.not_ejected = True
                 agent_mishap()
@@ -1078,6 +1081,8 @@ def car_agent():
             life_events()
 
         elif roll == 8:
+            log_and_print("You are sent on an undercover mision.")
+            config.agent_undercover = True
             result = skill_check("Deception", best_mental())
             career_choice = safe_int_input("Go undercover in:\n1. Rogue circles\n2. Citizen life\n", (1, 2))
             if result >= 8:
@@ -1278,6 +1283,8 @@ def car_agent():
 
     if success:
         agent_events()
+        config.agent_undercover = False
+        config.not_ejected = False  #Needed to cover situation where Agent rolls on Citizen/Rogue mishap tables.
         promotion = advance(*config.advancement_tuple, config.agent_terms)
 
         if promotion == 3:
@@ -1469,6 +1476,7 @@ def car_army():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Army")
             return
         if not config.keep_bonus:
             config.army_terms -= 1
@@ -1922,6 +1930,7 @@ def car_citizen():
         citizen_mishap()
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Citizen")
             return
         if not config.keep_bonus:
             config.citizen_terms -= 1
@@ -2145,6 +2154,7 @@ def car_entertainer():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Entertainer")
             return
         if not config.keep_bonus:
             config.entertainer_terms -= 1
@@ -2566,6 +2576,7 @@ def car_marines():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Marines")
             return
         if not config.keep_bonus:
             config.marines_terms -= 1
@@ -2600,7 +2611,7 @@ def car_marines():
                 log_and_print("The education doesn't really stick, but the teacher was very attractive.")
             else:
                 print("You're an excellent student.  Gain any skill at Rank 1.")
-                increase_any_skill(setrank=1)
+                increase_any_skill(set_rank=1)
 
         elif roll == 6:
             log_and_print("You are assigned to assault an enemy fortress.")
@@ -2774,7 +2785,7 @@ def car_marines():
                 for effect in MARINES_SERVICE_SKILLS.values():
                     effect()
                 config.basic_training = False
-        choice = safe_int_input("Gain a skill at Rank 1:\n1. Melee\n2. Gun Combat", (1, 2))
+        choice = safe_int_input("Gain a skill at Rank 1:\n1. Melee\n2. Gun Combat\n", (1, 2))
         skill_list = ["Melee", "Gun Combat"]
         increase_skill(skill_list[choice - 1], set_rank=1)
 
@@ -2984,6 +2995,7 @@ def car_merchants():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Merchants")
             return
         if not config.keep_bonus:
             config.merchants_terms -= 1
@@ -3476,6 +3488,7 @@ def car_navy():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Navy")
             return
         if not config.keep_bonus:
             config.navy_terms -= 1
@@ -3920,6 +3933,7 @@ def car_nobility():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Nobility")
             return
         if not config.keep_bonus:
             config.nobility_terms -= 1
@@ -4380,6 +4394,7 @@ def car_rogue():
         rogue_mishap()
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Rogue")
             return
         if not config.keep_bonus:
             config.rogue_terms -= 1
@@ -4614,6 +4629,7 @@ def car_scholar():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Scholar")
             return
         if not config.keep_bonus:
             config.scholar_terms -= 1
@@ -4675,7 +4691,7 @@ def car_scholar():
             if roll < 8:
                 log_and_print("You fall asleep in class, but learn a new card game afterwards.")
             else:
-                increase_any_skill(setrank=1)
+                increase_any_skill(set_rank=1)
 
         elif roll == 7:
             life_events()
@@ -5049,6 +5065,7 @@ def car_scout():
 
         if config.not_ejected:
             config.not_ejected = False
+            available_careers.append("Scout")
             return
         if not config.keep_bonus:
             config.scout_terms -= 1
@@ -5094,7 +5111,7 @@ def car_scout():
             for num in range(1, len(skill_list) + 1):
                 print(f"{num}. {skill_list[num - 1]}: Currently {config.skills[skill_list[num - 1]]}")
             choice = safe_int_input("Which skill?\n", (1, 4))
-            increase_skill(skill_list[choice - 1], setrank=1)
+            increase_skill(skill_list[choice - 1], set_rank=1)
 
         elif roll == 5:
             log_and_print("You perform an exemplary service for the Scouts.")
@@ -5107,7 +5124,7 @@ def car_scout():
             for num in range(1, len(skill_list) + 1):
                 print(f"{num}. {skill_list[num - 1]}: Currently {config.skills[skill_list[num - 1]]}")
             choice = safe_int_input("Which skill?\n", (1, 4))
-            increase_skill(skill_list[choice - 1], setrank=1)
+            increase_skill(skill_list[choice - 1], set_rank=1)
 
         elif roll == 7:
             life_events()

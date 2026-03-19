@@ -51,6 +51,7 @@ drifter_terms = 0
 drifter_rank = 0
 agent_terms = 0
 agent_rank = 0
+agent_undercover = False
 army_terms = 0
 army_rank = 0
 army_nco_rank = 0
@@ -131,6 +132,42 @@ skills = {
     "Zero-G": None
 }
 
+homeworld_traits = []
+
+homeworld_skills = {
+    "Agricultural": "Animals",
+    "Asteroid": "Zero-G",
+    "Desert": "Survival",
+    "Fluid Oceans": "Seafarer",
+    "Garden": "Animals",
+    "High Technology": "Computers",
+    "High Population": "Streetwise",
+    "Ice-Capped": "Vacc Suit",
+    "Industrial": "Trade",
+    "Low Technology": "Survival",
+    "Poor": "Animals",
+    "Rich": "Carouse",
+    "Water World": "Seafarer",
+    "Vacuum": "Vacc Suit"
+}
+
+education_skills = [
+    "Admin",
+    "Advocate",
+    "Art",
+    "Carouse",
+    "Comms",
+    "Computers",
+    "Drive",
+    "Engineer",
+    "Language",
+    "Medic",
+    "Physical Sciences",
+    "Life Sciences",
+    "Social Sciences",
+    "Space Sciences",
+    "Trade",
+]
 
 def name_char():
     global char_name
@@ -785,6 +822,7 @@ def choose_science_skill(set_rank=None):
     event_log.append(f"Increased {selected} via Science (any)")
 
 def tas_member():
+    global ship_shares
     if "TAS Membership" in starting_items:
         log_and_print("You gain 2 Ship Shares.")
         ship_shares += 2
@@ -795,4 +833,30 @@ def tas_member():
 def retire():
     update_char()
     print_event_log()
+
+    characters_dir = "Characters"
+    os.makedirs(characters_dir, exist_ok=True) 
+    safe_name = char_name.strip().replace(" ", "_").replace("/", "_").replace("\\", "_")
+    filename = os.path.join(characters_dir, f"{safe_name}.txt")
+    with open(filename, "w") as file:
+        file.write(f"Character Name: {char_name}     Homeworld Type:{homeworld_traits}\n\n")
+        file.write("\nCharacteristics:\n\n")
+        for stat_name, value in values.items():
+            mod = mods.get(stat_name, 0)
+            mod_str = f"+{mod}" if mod > 0 else str(mod) if mod < 0 else "0"
+            file.write(f"{stat_name}: {value} (Modifier: {mod_str})\n")
+        file.write("\n\n")
+        for skill, value in skills.items():
+            file.write(f"{skill}: {value}\n")
+  
+        file.write(f"Starting Equipment: {starting_items}\n\n")
+        file.write(f"Starting Cash: {starting_cash}\n\n")
+        file.write(f"Allies: {allies}    Contacts: {contacts}    Rivals: {rivals}    Enemies: {enemies}\n\n") 
+        file.write(f"Ship Shares: {ship_shares}\n\n")
+        
+        for event in event_log:
+            file.write(f"{event}\n")  
+
+    print("\nCharacter creation complete!")
+    input("\nPress Enter to exit...")
     sys.exit()
