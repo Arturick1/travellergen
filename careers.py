@@ -410,13 +410,13 @@ def rogue_events():
         skill_list = ["Streetwise", "Stealth", "Melee", "Gun Combat"]
         for skill in skill_list:
             print(f"{skill} ({config.skills[skill]})")
-        choice = safe_int_input("Gain a skill at Rank 1:\n1. Streetwise\n2. Stealth\n3. Melee\n4. Gun Combat", (1, 4))
+        choice = safe_int_input("Gain a skill at Rank 1:\n1. Streetwise\n2. Stealth\n3. Melee\n4. Gun Combat\n", (1, 4))
         increase_skill(skill_list[choice - 1], set_rank=1)
         
 
     elif roll == 9:
         log_and_print("You become involved in a feud with a rival criminal organization.")
-        choice = safe_int_input("You must roll:\n1. Stealth\n2. Gun Combat", (1, 2))
+        choice = safe_int_input("You must roll:\n1. Stealth\n2. Gun Combat\n", (1, 2))
         skill_list = ["Stealth", "Gun Combat"]
         result = skill_check(skill_list[choice - 1], "Dexterity")
         if result >= 8:
@@ -692,7 +692,7 @@ def car_drifter():
             if config.enemies < 1:
                 config.enemies += 1
             print("You are attacked by enemies!")
-            print("To avoid injury you must roll:\n1. Melee\n2. Gun Combat\n3. Stealth")
+            print("To avoid injury you must roll:\n1. Melee\n2. Gun Combat\n3. Stealth\n")
             choice = safe_int_input("1, 2, or 3?\n", (1, 3))
             if choice == 1:
                 result = config.skill_check("Melee", best_of_two("Strength", "Dexterity"))
@@ -4438,7 +4438,7 @@ def car_rogue():
                     increase_skill("Persuade", set_rank=1)
                 elif config.rogue_rank == 3:
                     choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Melee: Current ({config.skills["Melee"]})\n"
-                                            f"2. Gun Combat: Current ({config.skills["Gun Combat"]})", (1,2))
+                                            f"2. Gun Combat: Current ({config.skills["Gun Combat"]})\n", (1,2))
                     skill_list = ["Melee", "Gun Combat"]
                     increase_skill(skill_list[choice - 1], set_rank=1)
                 elif config.rogue_rank == 5:
@@ -4446,12 +4446,12 @@ def car_rogue():
             elif config.spec_name == "Pirate":
                 if config.rogue_rank == 1:
                     choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Pilot: Current ({config.skills["Pilot"]})\n"
-                                            f"2. Gunner: Current ({config.skills["Gunner"]})", (1,2))
+                                            f"2. Gunner: Current ({config.skills["Gunner"]})\n", (1,2))
                     skill_list = ["Pilot", "Gunner"]
                     increase_skill(skill_list[choice - 1], set_rank=1)
                 elif config.rogue_rank == 3:
                     choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Melee: Current ({config.skills["Melee"]})\n"
-                                            f"2. Gun Combat: Current ({config.skills["Gun Combat"]})", (1,2))
+                                            f"2. Gun Combat: Current ({config.skills["Gun Combat"]})\n", (1,2))
                     skill_list = ["Melee", "Gun Combat"]
                     increase_skill(skill_list[choice - 1], set_rank=1)
                 elif config.rogue_rank == 5:
@@ -4660,7 +4660,7 @@ def car_scholar():
                 for num in range(1, len(skill_list) + 1):
                     print(f"{num}. {skill_list[num - 1]}")
                 choice = safe_int_input("Which skill will you advance?\n", (1, 4))
-                increase_skill(skill_list(choice - 1))
+                increase_skill(skill_list[choice - 1])
                 skill_list.remove(skill_list[choice - 1])
                 for num in range(1, len(skill_list) + 1):
                     print(f"{num}. {skill_list[num - 1]}")
