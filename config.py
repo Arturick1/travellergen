@@ -173,7 +173,7 @@ def name_char():
     global char_name
     while True:
         char_name = input("Name your character: ")
-        choice = safe_choice("You sure about that name? y/n\n", ("y", "n"))
+        choice = safe_choice("You sure about that name? y/n\n>", ("y", "n"))
         if choice == "y":
             return char_name
 
@@ -270,7 +270,7 @@ def check_aging(debug=False):
         print("1 - Strength")
         print("2 - Dexterity")
         print("3 - Endurance")
-        choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 3))
+        choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 3))
         if choice == 1:
             values["Strength"] -= 1
         
@@ -286,13 +286,13 @@ def check_aging(debug=False):
         print("1 - Strength")
         print("2 - Dexterity")
         print("3 - Endurance")
-        choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 3))
+        choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 3))
         if choice == 1:
             values["Strength"] -= 2
             print("Choose second stat to lower:")
             print("1 - Dexterity")
             print("2 - Endurance")
-            choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 2))
+            choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 2))
 
             if choice == 1:
                 values["Dexterity"] -= 2
@@ -305,7 +305,7 @@ def check_aging(debug=False):
             print("Choose second stat to lower:")
             print("1 - Strength")
             print("2 - Endurance")
-            choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 2))
+            choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 2))
 
             if choice == 1:
                 values["Strength"] -= 2
@@ -318,7 +318,7 @@ def check_aging(debug=False):
             print("Choose second stat to lower:")
             print("1 - Strength")
             print("2 - Dexterity")
-            choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 2))
+            choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 2))
 
             if choice == 1:
                 values["Strength"] -= 2
@@ -340,7 +340,7 @@ def check_aging(debug=False):
         print("1 - Strength")
         print("2 - Dexterity")
         print("3 - Endurance")
-        choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 3))
+        choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 3))
         if choice == 1:
             values["Strength"] -= 1
                   
@@ -358,7 +358,7 @@ def check_aging(debug=False):
         print("1 - Strength")
         print("2 - Dexterity")
         print("3 - Endurance")
-        choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 3))
+        choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 3))
         if choice == 1:
             values["Strength"] += 1
                   
@@ -383,7 +383,7 @@ def check_aging(debug=False):
         print("1 - Intelligence")
         print("2 - Education")
         print("3 - Social Standing (People don't want to stand next to your loaded adult diaper)")
-        choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 3))
+        choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 3))
         if choice == 1:
             values["Intelligence"] -= 1
                   
@@ -427,7 +427,7 @@ def injury(forced_roll=None):
         print("Choose a stat to reduce by 1d6:")
         for i, stat in enumerate(physical_stats, start=1):
             print(f"{i}. {stat}")
-        choice = safe_int_input("Your choice (1, 2, 3)?\n", (1, 3))
+        choice = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 3))
 
         chosen_stat = physical_stats[choice - 1]
         values[chosen_stat] -= penalty
@@ -437,7 +437,7 @@ def injury(forced_roll=None):
         print("How do you want to apply the remaining injury?")
         print(f"1. -2 to both {other_stats[0]} and {other_stats[1]}")
         print(f"2. -4 to one of them")
-        option = safe_int_input("Your choice (1, 2, 3)?\n", (1, 2))
+        option = safe_int_input("Your choice (1, 2, 3)?\n>", (1, 2))
 
         if option == 1:
             for s in other_stats:
@@ -446,35 +446,35 @@ def injury(forced_roll=None):
             print("Which stat takes -4?")
             for i, stat in enumerate(other_stats, start=1):
                 print(f"{i}. {stat}")
-            sub_choice = int(input("(1 or 2)? "))
+            sub_choice = int(input("(1 or 2)?\n>"))
             values[other_stats[sub_choice - 1]] -= 4
 
     if result == 2:
         penalty = roll_1d6()
         print("Severely injured.  Reduce one physical characteristic by 1d6.")
         event_log.append(f"{char_name} received a severe injury.")
-        choice = safe_int_input("Choose: 1. Strength, 2. Dexterity, 3. Endurance)", (1, 3))
+        choice = safe_int_input("Choose: 1. Strength, 2. Dexterity, 3. Endurance\n>)", (1, 3))
         chosen_stat = physical_stats[choice - 1]
         values[chosen_stat] -= penalty
 
     if result == 3:
         print("Missing eye or limb.")
         event_log.append(f"{char_name} lost an eye or limb.")
-        choice = safe_int_input("Reduce 1. Strength, or 2. Dexterity, by two.", (1, 2))
+        choice = safe_int_input("Reduce 1. Strength, or 2. Dexterity, by two.\n>", (1, 2))
         chosen_stat = physical_stats[choice - 1]
         values[chosen_stat] -= 2
 
     if result == 4:
         print("Scarred.  You are scarred and injured.  Reduce any one physical characteristic by two.")
         event_log.append(f"{char_name} was horribly scarred.")
-        choice = safe_int_input("Choose: 1. Strength, 2. Dexterity, 3. Endurance:", (1, 3))
+        choice = safe_int_input("Choose: 1. Strength, 2. Dexterity, 3. Endurance:\n>", (1, 3))
         chosen_stat = physical_stats[choice - 1]
         values[chosen_stat] -= 2
 
     if result == 5:
         print("Injured.  Reduce any physical characteristic by 1.")
         event_log.append(f"{char_name} was injured.")
-        choice = safe_int_input("Choose: 1. Strength, 2. Dexterity, 3. Endurance:", (1, 3))  
+        choice = safe_int_input("Choose: 1. Strength, 2. Dexterity, 3. Endurance:\n>", (1, 3))  
         chosen_stat = physical_stats[choice - 1]  
         values[chosen_stat] -= 1    
 
@@ -605,6 +605,51 @@ def life_events(forced_roll=None):
     update_char()
     input("Press ENTER to continue.")
 
+def basic_train(table):
+    global basic_training
+    basic_training = True
+    if prior_careers < 1:
+        for skill in table.values():
+            if skill == "Any Science":
+                choose_science_skill()
+            else:
+                increase_skill(skill)
+    else:
+        skill_list = []
+        print("Choose one skill from the Service Skills table to gain at Rank 0:\n")
+        for i, skill_name in enumerate(table.values(), 1):   # ← .values() + enumerate
+            current = skills.get(skill_name, None)
+            print(f"{i}. {skill_name} (current: {current})")
+            skill_list.append(skill_name)
+
+        choice = safe_int_input("Your choice?\n>", (1, len(skill_list)))
+        increase_skill(skill_list[choice - 1])   
+    basic_training = False 
+
+def table_roll(table):
+    roll = roll_1d6()
+    result = table[roll]
+    if result in stats:
+        increase_stat(result)
+    elif result == "Any Science":
+        choose_science_skill()
+    else:
+        increase_skill(result)
+
+def commission(new_spec_table):
+    global spec_name, spec_table
+    if spec_name != "Officer":
+        print("It occurs to you that shining your own boots may be for suckers.")  
+        com = safe_choice("Want to apply for a commission? (y/n)\n", ("y", "n"))
+        if com == "y":
+            attempt = mods["Social Standing"] + roll_2d6()
+            if attempt >= 8:
+                spec_name = "Officer"
+                spec_table = new_spec_table
+                log_and_print("You become a commissioned officer.")
+            else:
+                log_and_print("Your application to officer school is filed very deeply.")
+
 def increase_stat(stat_name, amount=1):
     if stat_name in values:
         old = values[stat_name]
@@ -656,9 +701,9 @@ def increase_any_skill(setrank=None):
         print(f"{number}: {skill}: {value}")
         skill_list.append(skill)
     if not setrank:
-        choice = safe_int_input("Choose which skill, by number, to improve:\n", (1, number))
+        choice = safe_int_input("Choose which skill, by number, to improve:\n>", (1, number))
     else:
-        choice = safe_int_input(f"Choose which skill, by number, to gain at Rank {setrank}:\n", (1, number))
+        choice = safe_int_input(f"Choose which skill, by number, to gain at Rank {setrank}:\n>", (1, number))
     increase_skill(skill_list[choice - 1], setrank)
 
 def increase_existing_skill():
@@ -670,7 +715,7 @@ def increase_existing_skill():
             number += 1
             print(f"{number}: {skill}: {value}")
             skill_list.append(skill)
-    choice = safe_int_input("Choose which skill, by number, to improve:\n", (1, number))
+    choice = safe_int_input("Choose which skill, by number, to improve:\n>", (1, number))
     increase_skill(skill_list[choice - 1])
 
 def skill_check(skill, mod):
@@ -681,10 +726,7 @@ def skill_check(skill, mod):
     if skills[skill] == None:
         skill_bonus -= 3
         if skills["Jack of all Trades"] is not None:
-            if skills["Jack of all Trades"] > 0 and skills["Jack of all Trades"] < 3:
-                skill_bonus += skills["Jack of all Trades"]
-            elif skills["Jack of all Trades"] >= 3:
-                skill_bonus += 3
+            skill_bonus += min(skills["Jack of all Trades", 3])
         print(f"Adding {skill} skill bonus of {skill_bonus}, {mod} bonus of {stat_bonus}, and dice roll of {rolled}")
         skill_result += skill_bonus + stat_bonus + rolled
         return skill_result
@@ -810,7 +852,7 @@ def choose_science_skill(set_rank=None):
     print("3. Social Sciences")
     print("4. Space Sciences")
     
-    choice = safe_int_input("1–4? ", (1, 4))
+    choice = safe_int_input("1–4?\n>", (1, 4))
     science_skills = [
         "Physical Sciences",
         "Life Sciences",
@@ -839,17 +881,17 @@ def retire():
     safe_name = char_name.strip().replace(" ", "_").replace("/", "_").replace("\\", "_")
     filename = os.path.join(characters_dir, f"{safe_name}.txt")
     with open(filename, "w") as file:
-        file.write(f"Character Name: {char_name}     Homeworld Type:{homeworld_traits}\n\n")
+        file.write(f"Character Name: {char_name}     Homeworld Type: {", ".join(homeworld_traits)}\n\n")
         file.write("\nCharacteristics:\n\n")
         for stat_name, value in values.items():
             mod = mods.get(stat_name, 0)
             mod_str = f"+{mod}" if mod > 0 else str(mod) if mod < 0 else "0"
             file.write(f"{stat_name}: {value} (Modifier: {mod_str})\n")
-        file.write("\n\n")
+        file.write("\n\nSkills:\n\n")
         for skill, value in skills.items():
             file.write(f"{skill}: {value}\n")
   
-        file.write(f"Starting Equipment: {starting_items}\n\n")
+        file.write(f"Starting Equipment: {", ".join(starting_items)}\n\n")
         file.write(f"Starting Cash: {starting_cash}\n\n")
         file.write(f"Allies: {allies}    Contacts: {contacts}    Rivals: {rivals}    Enemies: {enemies}\n\n") 
         file.write(f"Ship Shares: {ship_shares}\n\n")

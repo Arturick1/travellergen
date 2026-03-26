@@ -38,57 +38,57 @@ available_careers = [
 #Citizen tables moved outside of career for Agent event.
 
 CITIZEN_PERSONAL_DEVELOPMENT = {
-    1: lambda: increase_stat("Education"),
-    2: lambda: increase_stat("Intelligence"),
-    3: lambda: increase_skill("Carouse"),
-    4: lambda: increase_skill("Gambler"),
-    5: lambda: increase_skill("Drive"),
-    6: lambda: increase_skill("Jack of all Trades")
+    1: "Education",
+    2: "Intelligence",
+    3: "Carouse",
+    4: "Gambler",
+    5: "Drive",
+    6: "Jack of all Trades",
 }
 
 CITIZEN_SERVICE_SKILLS = {
-    1: lambda: increase_skill("Drive"),
-    2: lambda: increase_skill("Flyer"),
-    3: lambda: increase_skill("Streetwise"),
-    4: lambda: increase_skill("Melee"),
-    5: lambda: increase_skill("Steward"),
-    6: lambda: increase_skill("Trade"),
+    1: "Drive",
+    2: "Flyer",
+    3: "Streetwise",
+    4: "Melee",
+    5: "Steward",
+    6: "Trade",
 }
 
 CITIZEN_ADVANCED_EDUCATION = {
-    1: lambda: increase_skill("Art"),
-    2: lambda: increase_skill("Advocate"),
-    3: lambda: increase_skill("Diplomat"),
-    4: lambda: increase_skill("Language"),
-    5: lambda: increase_skill("Computers"),
-    6: lambda: increase_skill("Medic"),
+    1: "Art",
+    2: "Advocate",
+    3: "Diplomat",
+    4: "Language",
+    5: "Computers",
+    6: "Medic",
 }   
 
 CITIZEN_CORPORATE = {
-    1: lambda: increase_skill("Advocate"),
-    2: lambda: increase_skill("Admin"),
-    3: lambda: increase_skill("Broker"),
-    4: lambda: increase_skill("Computers"),
-    5: lambda: increase_skill("Diplomat"),
-    6: lambda: increase_skill("Leadership"),
+    1: "Advocate",
+    2: "Admin",
+    3: "Broker",
+    4: "Computers",
+    5: "Diplomat",
+    6: "Leadership",
 }
 
 CITIZEN_WORKER = {
-    1: lambda: increase_skill("Drive"),
-    2: lambda: increase_skill("Mechanic"),
-    3: lambda: increase_skill("Trade"),
-    4: lambda: increase_skill("Engineer"),
-    5: lambda: increase_skill("Trade"),
-    6: lambda: choose_science_skill(),
+    1: "Drive",
+    2: "Mechanic",
+    3: "Trade",
+    4: "Engineer",
+    5: "Trade",
+    6: "Any Science",
 }
 
 CITIZEN_COLONIST = {
-    1: lambda: increase_skill("Animals"),
-    2: lambda: increase_skill("Athletics"),
-    3: lambda: increase_skill("Jack of all Trades"),
-    4: lambda: increase_skill("Drive"),
-    5: lambda: increase_skill("Survival"),
-    6: lambda: increase_skill("Recon"),
+    1: "Animals",
+    2: "Athletics",
+    3: "Jack of all Trades",
+    4: "Drive",
+    5: "Survival",
+    6: "Recon",
 }
 
 CITIZEN_MUSTER_CASH = {
@@ -123,7 +123,7 @@ def citizen_mishap():
         log_and_print("Your business is investigated and shut down.")
         print("\nCooperate with the investigation and you will receive +2 to your next Qualification check.")
         print("Refuse to cooperate and you will gain an Ally.")
-        choice = safe_int_input("Will you:\n1. Cooperate\n2. Refuse", (1, 2))
+        choice = safe_int_input("Will you:\n1. Cooperate\n2. Refuse\n>", (1, 2))
         if choice == 1:
             log_and_print("You cooperate with the investigators and get a recommendation for a job.")
             config.qual_bonus += 2
@@ -143,14 +143,12 @@ def citizen_mishap():
                     number += 1
                     print(f"{number}: {skill}: {value}")
                     skill_list.append(skill)
-            choice = safe_int_input("Choose which skill, by number, to increase:\n", (1, number))
+            choice = safe_int_input("Choose which skill, by number, to increase:\n>", (1, number))
             increase_skill(skill_list[choice - 1])
 
     else:
         log_and_print("One of your coworkers develops a hatred of you and sabotages your life.  You gain a Rival.")
         config.rivals += 1
-
- 
 
 def citizen_events():
     roll = roll_2d6()
@@ -161,7 +159,7 @@ def citizen_events():
     elif roll == 3:
         log_and_print("Political upheaval strikes your homeworld, and you are caught up in the revolution.")
         print("Gain one of the following skills at rank 1:\n1. Advocate\n2. Persuade\n3.Explosives\n4. Streetwise\n")
-        choice = safe_int_input("Your pick? (1-4)\n", (1, 4))
+        choice = safe_int_input("Your pick? (1-4)\n>", (1, 4))
         result = 0
         if choice == 1:
             increase_skill("Advocate", set_rank=1)
@@ -184,7 +182,7 @@ def citizen_events():
 
     elif roll == 4:
         log_and_print("You spend time maintaining and using heavy vehicles, either as a job or a hobby.")
-        choice = safe_int_input("Increase one of the following skills:\n1. Mechanic\n2. Drive\n3. Flyer\n4. Engineer", (1, 4))
+        choice = safe_int_input("Increase one of the following skills:\n1. Mechanic\n2. Drive\n3. Flyer\n4. Engineer\n>", (1, 4))
         if choice == 1:
             increase_skill("Mechanic")
         elif choice == 2:
@@ -214,11 +212,11 @@ def citizen_events():
         log_and_print("You learn something you shouldn't have -- a corporate secret, a political scandal...")
         print("If you choose to illegally profit from this info, you will gain several benefits:\n"
                 "+1 DM to a Benefit Roll and Streetwise 1, Deception 1, or a Criminal Contact.")
-        yes_no = safe_choice("Do you utilize this secret knowledge? (y/n)\n", ("y", "n"))
+        yes_no = safe_choice("Do you utilize this secret knowledge? (y/n)\n>", ("y", "n"))
         if yes_no == "y":
             config.benefit_bonus.append(1)
             log_and_print("You're evidently not above blackmail.")
-            choice = safe_int_input("Choose your benefit:\n1. Streetwise 1\n2. Deception 1\n3. Criminal Contact\n", (1, 3))
+            choice = safe_int_input("Choose your benefit:\n1. Streetwise 1\n2. Deception 1\n3. Criminal Contact\n>", (1, 3))
             if choice == 1:
                 increase_skill("Streetwise", set_rank=1)
             elif choice == 2:
@@ -237,13 +235,13 @@ def citizen_events():
         log_and_print("You gain experience as a computer operator or survey technician.")
         skill_list = ["Comms", "Computers", "Engineer", "Sensors"]
         choice = safe_int_input("Increase one of the following skills:\n"
-        "1. Comms\n2. Computers\n3. Engineer\n4. Sensors\n", (1, 4))
+        "1. Comms\n2. Computers\n3. Engineer\n4. Sensors\n>", (1, 4))
         increase_skill(skill_list[choice - 1])
     
     elif roll == 11:
         log_and_print("You befriend a superior in the corporation or colony.")
         config.allies += 1
-        choice = safe_int_input("Choose either:\n1. Gain Diplomat 1\n2. +4 DM to your next Advancement roll\n", (1, 2))
+        choice = safe_int_input("Choose either:\n1. Gain Diplomat 1\n2. +4 DM to your next Advancement roll\n>", (1, 2))
         if choice == 1:
             increase_skill("Diplomat", set_rank=1)
         else:
@@ -256,57 +254,57 @@ def citizen_events():
 #Rogue tables moved outside the function due to Agent event.
 
 ROGUE_PERSONAL_DEVELOPMENT = {
-    1: lambda: increase_skill("Carouse"),
-    2: lambda: increase_stat("Dexterity"),
-    3: lambda: increase_stat("Endurance"),
-    4: lambda: increase_skill("Gambler"),
-    5: lambda: increase_skill("Melee"),
-    6: lambda: increase_skill("Gun Combat")
+    1: "Carouse",
+    2: "Dexterity",
+    3: "Endurance",
+    4: "Gambler",
+    5: "Melee",
+    6: "Gun Combat",
 }
 
 ROGUE_SERVICE_SKILLS = {
-    1: lambda: increase_skill("Deception"),
-    2: lambda: increase_skill("Recon"),
-    3: lambda: increase_skill("Athletics"),
-    4: lambda: increase_skill("Gun Combat"),
-    5: lambda: increase_skill("Stealth"),
-    6: lambda: increase_skill("Streetwise"),
+    1: "Deception",
+    2: "Recon",
+    3: "Athletics",
+    4: "Gun Combat",
+    5: "Stealth",
+    6: "Streetwise",
 }
 
 ROGUE_ADVANCED_EDUCATION = {
-    1: lambda: increase_skill("Computers"),
-    2: lambda: increase_skill("Comms"),
-    3: lambda: increase_skill("Medic"),
-    4: lambda: increase_skill("Investigate"),
-    5: lambda: increase_skill("Persuade"),
-    6: lambda: increase_skill("Advocate"),
+    1: "Computers",
+    2: "Comms",
+    3: "Medic",
+    4: "Investigate",
+    5: "Persuade",
+    6: "Advocate",
 }   
 
 ROGUE_THIEF = {
-    1: lambda: increase_skill("Stealth"),
-    2: lambda: increase_skill("Computers"),
-    3: lambda: increase_skill("Remote Operations"),
-    4: lambda: increase_skill("Streetwise"),
-    5: lambda: increase_skill("Deception"),
-    6: lambda: increase_skill("Athletics"),
+    1: "Stealth",
+    2: "Computers",
+    3: "Remote Operations",
+    4: "Streetwise",
+    5: "Deception",
+    6: "Athletics",
 }
 
 ROGUE_ENFORCER = {
-    1: lambda: increase_skill("Gun Combat"),
-    2: lambda: increase_skill("Melee"),
-    3: lambda: increase_skill("Streetwise"),
-    4: lambda: increase_skill("Persuade"),
-    5: lambda: increase_skill("Athletics"),
-    6: lambda: increase_skill("Drive"),
+    1: "Gun Combat",
+    2: "Melee",
+    3: "Streetwise",
+    4: "Persuade",
+    5: "Athletics",
+    6: "Drive",
 }
 
 ROGUE_PIRATE = {
-    1: lambda: increase_skill("Pilot"),
-    2: lambda: increase_skill("Astrogation"),
-    3: lambda: increase_skill("Gunner"),
-    4: lambda: increase_skill("Engineer"),
-    5: lambda: increase_skill("Vacc Suit"),
-    6: lambda: increase_skill("Melee"),
+    1: "Pilot",
+    2: "Astrogation",
+    3: "Gunner",
+    4: "Engineer",
+    5: "Vacc Suit",
+    6: "Melee",
 }
 
 ROGUE_MUSTER_CASH = {
@@ -326,7 +324,7 @@ def rogue_mishap():
     roll = roll_1d6()
     if roll == 1:
         log_and_print("Severely injured.")
-        choice = safe_int_input("Choose:\n1. A roll of '2' on the injury table\n2. Roll twice and take the lower result\n", (1, 2))
+        choice = safe_int_input("Choose:\n1. A roll of '2' on the injury table\n2. Roll twice and take the lower result\n>", (1, 2))
         if choice == 1:
             injury(2)
         else:
@@ -345,7 +343,7 @@ def rogue_mishap():
         skill_list = ["Deception", "Pilot", "Zero-G", "Gunner"]
         for skill in skill_list:
             print(f"{skill}: Current Rank{config.skills[skill]}")
-        choice = safe_int_input("Gain a skill at Rank 1:\n1. Deception\n2. Pilot\n3. Zero-G\n4. Gunner", (1, 4))
+        choice = safe_int_input("Gain a skill at Rank 1:\n1. Deception\n2. Pilot\n3. Zero-G\n4. Gunner\n>", (1, 4))
         increase_skill(skill_list[choice - 1], set_rank=1)
 
     elif roll == 5:
@@ -366,7 +364,7 @@ def rogue_events():
 
     elif roll == 3:
         log_and_print("You are arrested and charged.")
-        choice = safe_int_input("Do you:\n 1. Defend yourself\n2. Hire a lawyer\n", (1, 2))
+        choice = safe_int_input("Do you:\n 1. Defend yourself\n2. Hire a lawyer\n>", (1, 2))
         if choice == 1:
             result = skill_check("Advocate")
             if result >= 8:
@@ -383,7 +381,7 @@ def rogue_events():
     elif roll == 4:
         log_and_print("You are involved in the planning of an impressive heist.")
         choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Computers ({config.skills["Computers"]})\n2. Sensors ({config.skills["Sensors"]})\n"
-                                f"3. Comms ({config.skills["Comms"]})\n4. Mechanic ({config.skills["Mechanic"]}\n)", (1, 4))
+                                f"3. Comms ({config.skills["Comms"]})\n4. Mechanic ({config.skills["Mechanic"]})\n>", (1, 4))
         skill_list = ["Computers", "Sensors", "Comms", "Mechanic"]
         increase_skill(skill_list[choice - 1], set_rank=1)
 
@@ -394,7 +392,7 @@ def rogue_events():
 
     elif roll == 6:
         log_and_print("You have the opportunity to backstab a fellow Rogue for personal gain.")
-        choice = safe_choice("Do you do it? (y/n)\n", ("y", "n"))
+        choice = safe_choice("Do you do it? (y/n)\n>", ("y", "n"))
         if choice == "y":
             log_and_print("You get some approval for your mercenary attitude.")
             config.advance_bonus += 4
@@ -410,13 +408,13 @@ def rogue_events():
         skill_list = ["Streetwise", "Stealth", "Melee", "Gun Combat"]
         for skill in skill_list:
             print(f"{skill} ({config.skills[skill]})")
-        choice = safe_int_input("Gain a skill at Rank 1:\n1. Streetwise\n2. Stealth\n3. Melee\n4. Gun Combat\n", (1, 4))
+        choice = safe_int_input("Gain a skill at Rank 1:\n1. Streetwise\n2. Stealth\n3. Melee\n4. Gun Combat\n>", (1, 4))
         increase_skill(skill_list[choice - 1], set_rank=1)
         
 
     elif roll == 9:
         log_and_print("You become involved in a feud with a rival criminal organization.")
-        choice = safe_int_input("You must roll:\n1. Stealth\n2. Gun Combat\n", (1, 2))
+        choice = safe_int_input("You must roll:\n1. Stealth\n2. Gun Combat\n>", (1, 2))
         skill_list = ["Stealth", "Gun Combat"]
         result = skill_check(skill_list[choice - 1], "Dexterity")
         if result >= 8:
@@ -430,7 +428,7 @@ def rogue_events():
         log_and_print("You are involved in a gambling ring.")
         increase_skill("Gambler", set_rank=1)
         log_and_print("You get the opportunity to gamble your fortune on a potentially lucrative deal.")
-        choice = safe_choice("Will you risk your benefits? (y/n)\n", ("y", "n"))
+        choice = safe_choice("Will you risk your benefits? (y/n)\n>", ("y", "n"))
         if choice == "y":
             benefits = config.rogue_terms
             if config.rogue_rank == 1 or config.rogue_rank == 2:
@@ -439,7 +437,7 @@ def rogue_events():
                 benefits += 2
             elif config.rogue_rank >= 5:
                 benefits += 3
-            choice = safe_int_input(f"You have {benefits} benefit rolls to gamble.\nChoose how many: ", (1, benefits))
+            choice = safe_int_input(f"You have {benefits} benefit rolls to gamble.\nChoose how many:\n>", (1, benefits))
             result = skill_check("Gambler", best_mental())
             if result >= 8:
                 config.rogue_terms += math.ceil(choice / 2)
@@ -455,7 +453,7 @@ def rogue_events():
     elif roll == 11:
         log_and_print("A crime lord takes you under his wing.")
         config.allies += 1
-        choice = safe_int_input("Choose either:\n1. Gain Tactics 1\n2. +4 DM to your next Advancement roll\n", (1, 2))
+        choice = safe_int_input("Choose either:\n1. Gain Tactics 1\n2. +4 DM to your next Advancement roll\n>", (1, 2))
         if choice == 1:
             increase_skill("Tactics", set_rank=1)
         else:
@@ -494,7 +492,7 @@ def attempt_career():
     print("You can pursue one of the following careers:")
     for i in range(len(available_careers)):
         print(f"{i + 1}: {available_careers[i]}")
-    choice = safe_int_input("Your choice?\n", (1, len(available_careers)))
+    choice = safe_int_input("Your choice?\n>", (1, len(available_careers)))
     career_funcs[available_careers[choice - 1]]()
 
 def check_retirement():
@@ -626,19 +624,11 @@ def car_drifter():
                     config.ship_shares += 2
 
     def drifter_develop():
-        config.careers.append(f"Drifter: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-        choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-        roll = roll_1d6()
-        if choice == 1:
-            DRIFTER_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            DRIFTER_SERVICE_SKILLS[roll]()
-
-        else:
-            config.spec_table[roll]()
+        choice = safe_int_input("1, 2, or 3?\n>", (1, 3))
+        tables = [DRIFTER_PERSONAL_DEVELOPMENT, DRIFTER_SERVICE_SKILLS, config.spec_table]
+        table_roll(tables[choice - 1])
 
     def drifter_mishap():
         print("You have suffered a dangerous mishap.")
@@ -670,7 +660,7 @@ def car_drifter():
         if roll == 4:
             print("You pick up a few useful skills here and there.")
             print("Choose to gain:\n1. Jack of All Trades\n2. Survival\n3. Streetwise\n4. Melee.")
-            choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
+            choice = safe_int_input("1, 2, 3, or 4?\n>", (1, 4))
             if choice == 1:
                 config.increase_skill("Jack of all Trades")
             if choice == 2:
@@ -693,7 +683,7 @@ def car_drifter():
                 config.enemies += 1
             print("You are attacked by enemies!")
             print("To avoid injury you must roll:\n1. Melee\n2. Gun Combat\n3. Stealth\n")
-            choice = safe_int_input("1, 2, or 3?\n", (1, 3))
+            choice = safe_int_input("1, 2, or 3?\n>", (1, 3))
             if choice == 1:
                 result = config.skill_check("Melee", best_of_two("Strength", "Dexterity"))
             elif choice == 2:
@@ -735,48 +725,48 @@ def car_drifter():
             config.auto_advance = True
 
     DRIFTER_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_stat("Strength"),
-        2: lambda: increase_stat("Endurance"),
-        3: lambda: increase_stat("Dexterity"),
-        4: lambda: increase_skill("Jack of all Trades"),
-        5: lambda: increase_stat("Endurance"),
-        6: lambda: increase_stat("Intelligence")
+        1: "Strength",
+        2: "Endurance",
+        3: "Dexterity",
+        4: "Jack of all Trades",
+        5: "Endurance",
+        6: "Intelligence",
     }
     
     DRIFTER_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Athletics"),
-        2: lambda: increase_skill("Melee"),
-        3: lambda: increase_skill("Recon"),
-        4: lambda: increase_skill("Streetwise"),
-        5: lambda: increase_skill("Stealth"),
-        6: lambda: increase_skill("Survival"),
+        1: "Athletics",
+        2: "Melee",
+        3: "Recon",
+        4: "Streetwise",
+        5: "Stealth",
+        6: "Survival",
     }
 
     SPEC_BARBARIAN = {
-        1: lambda: increase_skill("Animals"),
-        2: lambda: increase_skill("Carouse"),
-        3: lambda: increase_skill("Melee"),
-        4: lambda: increase_skill("Stealth"),
-        5: lambda: increase_skill("Seafarer"),
-        6: lambda: increase_skill("Survival"),
+        1: "Animals",
+        2: "Carouse",
+        3: "Melee",
+        4: "Stealth",
+        5: "Seafarer",
+        6: "Survival",
     }
 
     SPEC_WANDERER = {
-        1: lambda: increase_skill("Athletics"),
-        2: lambda: increase_skill("Deception"),
-        3: lambda: increase_skill("Recon"),
-        4: lambda: increase_skill("Stealth"),
-        5: lambda: increase_skill("Streetwise"),
-        6: lambda: increase_skill("Survival"),
+        1: "Athletics",
+        2: "Deception",
+        3: "Recon",
+        4: "Stealth",
+        5: "Streetwise",
+        6: "Survival",
     }
 
     SPEC_SCAVENGER = {
-        1: lambda: increase_skill("Pilot"),
-        2: lambda: increase_skill("Mechanic"),
-        3: lambda: increase_skill("Astrogation"),
-        4: lambda: increase_skill("Vacc Suit"),
-        5: lambda: increase_skill("Zero-G"),
-        6: lambda: increase_skill("Gun Combat"),
+        1: "Pilot",
+        2: "Mechanic",
+        3: "Astrogation",
+        4: "Vacc Suit",
+        5: "Zero-G",
+        6: "Gun Combat",
     }
 
     if "Drifter" not in config.careers:
@@ -784,7 +774,7 @@ def car_drifter():
         print("1. A Barbarian, struggling to survive on a primitive world.")
         print("2. A Wanderer, moving from starport to starport with your hand out.")
         print("3. A Scavenger, mining asteroids or stripping shipwrecks in the cold void.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.drifter_rank = 0
 
         if spec_choice == 1:
@@ -794,10 +784,9 @@ def car_drifter():
             config.advancement_tuple = ("Strength", 7)  
             config.careers.append("Drifter")
             config.event_log.append(f"Term{config.terms}: Drifter: Barbarian")
-            if config.prior_careers < 1:
-                for effect in SPEC_BARBARIAN.values():
-                    effect()
-                config.basic_training = False
+            basic_train(SPEC_BARBARIAN)
+                    
+                
 
         if spec_choice == 2:
             config.spec_name = "Wanderer"
@@ -806,10 +795,7 @@ def car_drifter():
             config.advancement_tuple = ("Intelligence", 7)  
             config.careers.append("Drifter")
             config.event_log.append(f"Term{config.terms}: Drifter: Wanderer")
-            if config.prior_careers < 1:
-                for effect in SPEC_WANDERER.values():
-                    effect()  
-                config.basic_training = False  
+            basic_train(SPEC_WANDERER) 
     
         if spec_choice == 3:
             config.spec_name = "Scavenger"
@@ -818,14 +804,12 @@ def car_drifter():
             config.advancement_tuple = ("Endurance", 7) 
             config.careers.append("Drifter") 
             config.event_log.append(f"Term{config.terms}: Drifter: Scavenger")
-            if config.prior_careers < 1:
-                for effect in SPEC_SCAVENGER.values():
-                    effect()
-                config.basic_training = False
+            basic_train(SPEC_SCAVENGER)
+        config.careers.append(f"Drifter")
+        config.event_log.append(f"Term{config.terms}: Drifter: {config.spec_name}")
 
     else:
         print("You continue the life of a Drifter.")
-        config.careers.append(f"Term{config.terms}: Drifter: {config.spec_name}.")
         config.event_log.append(f"Term{config.terms}: Drifter: {config.spec_name}")
     
     drifter_develop()
@@ -860,24 +844,13 @@ def car_drifter():
                 if config.drifter_rank == 1:
                     increase_skill("Vacc Suit", set_rank=1)
                 elif config.drifter_rank == 3:
-                    choice = safe_int_input("Choose to gain a skill at Rank 1:\n1. Trade\n2. Mechanic\n", (1, 2))
+                    choice = safe_int_input("Choose to gain a skill at Rank 1:\n1. Trade\n2. Mechanic\n>", (1, 2))
                     if choice == 1:
                         increase_skill("Trade", set_rank=1)
                     elif choice == 2:
                         increase_skill("Mechanic", set_rank=1)
-
-            print("Choose a table to advance your skills:\n")
-            print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-            choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                DRIFTER_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                DRIFTER_SERVICE_SKILLS[roll]()
-
-            else:
-                config.spec_table[roll]()
+            drifter_develop()
+            
     config.age += 4
     check_aging()
     print(f"\n\nAfter four years as a {config.spec_name}, you are {config.age} years old and your stats are as follows:\n")
@@ -900,57 +873,57 @@ def car_agent():
     global available_careers
 
     AGENT_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_skill("Gun Combat"),
-        2: lambda: increase_stat("Dexterity"),
-        3: lambda: increase_stat("Endurance"),
-        4: lambda: increase_skill("Melee"),
-        5: lambda: increase_stat("Intelligence"),
-        6: lambda: increase_skill("Athletics")
+        1: "Gun Combat",
+        2: "Dexterity",
+        3: "Endurance",
+        4: "Melee",
+        5: "Intelligence",
+        6: "Athletics",
     }
 
     AGENT_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Streetwise"),
-        2: lambda: increase_skill("Drive"),
-        3: lambda: increase_skill("Investigate"),
-        4: lambda: increase_skill("Computers"),
-        5: lambda: increase_skill("Recon"),
-        6: lambda: increase_skill("Gun Combat"),
+        1: "Streetwise",
+        2: "Drive",
+        3: "Investigate",
+        4: "Computers",
+        5: "Recon",
+        6: "Gun Combat",
     }
 
     AGENT_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Advocate"),
-        2: lambda: increase_skill("Comms"),
-        3: lambda: increase_skill("Computers"),
-        4: lambda: increase_skill("Medic"),
-        5: lambda: increase_skill("Stealth"),
-        6: lambda: increase_skill("Remote Operations"),
+        1: "Advocate",
+        2: "Comms",
+        3: "Computers",
+        4: "Medic",
+        5: "Stealth",
+        6: "Remote Operations",
     }   
     
     AGENT_LAW_ENFORCEMENT = {
-        1: lambda: increase_skill("Investigate"),
-        2: lambda: increase_skill("Recon"),
-        3: lambda: increase_skill("Streetwise"),
-        4: lambda: increase_skill("Stealth"),
-        5: lambda: increase_skill("Melee"),
-        6: lambda: increase_skill("Advocate"),
+        1: "Investigate",
+        2: "Recon",
+        3: "Streetwise",
+        4: "Stealth",
+        5: "Melee",
+        6: "Advocate",
     }
 
     AGENT_INTELLIGENCE = {
-        1: lambda: increase_skill("Investigate"),
-        2: lambda: increase_skill("Recon"),
-        3: lambda: increase_skill("Comms"),
-        4: lambda: increase_skill("Stealth"),
-        5: lambda: increase_skill("Persuade"),
-        6: lambda: increase_skill("Deception"),
+        1: "Investigate",
+        2: "Recon",
+        3: "Comms",
+        4: "Stealth",
+        5: "Persuade",
+        6: "Deception",
     }
 
     AGENT_CORPORATE = {
-        1: lambda: increase_skill("Investigate"),
-        2: lambda: increase_skill("Computers"),
-        3: lambda: increase_skill("Stealth"),
-        4: lambda: increase_skill("Gun Combat"),
-        5: lambda: increase_skill("Deception"),
-        6: lambda: increase_skill("Streetwise"),
+        1: "Investigate",
+        2: "Computers",
+        3: "Stealth",
+        4: "Gun Combat",
+        5: "Deception",
+        6: "Streetwise",
     }
 
     AGENT_MUSTER_CASH = {
@@ -969,7 +942,7 @@ def car_agent():
         roll = roll_1d6()
         if roll == 1:
             log_and_print(f"Severely injured in action.")
-            choice = safe_int_input("You must choose to:\n1. Accept a roll of '2' on the injury table.\n2. Roll twice and take the lower result.\n", (1, 2))
+            choice = safe_int_input("You must choose to:\n1. Accept a roll of '2' on the injury table.\n2. Roll twice and take the lower result.\n>", (1, 2))
             if choice == 1:
                 injury(2)
             else:
@@ -977,7 +950,7 @@ def car_agent():
 
         elif roll == 2:
             log_and_print("\nA criminal or other figure under investigation offers you a deal.\n")
-            choice = safe_int_input("You must choose:\n1. Accept, and leave this career without further penalty.\n2. Refuse, take the lowest of two rolls on the injury table, gain an Enemy, and advance any one skill of your choice.\n", (1, 2))
+            choice = safe_int_input("You must choose:\n1. Accept, and leave this career without further penalty.\n2. Refuse, take the lowest of two rolls on the injury table, gain an Enemy, and advance any one skill of your choice.\n>", (1, 2))
             if choice == 1:
                 log_and_print("You took the deal, and left your career in disgrace.")
             else:
@@ -987,7 +960,7 @@ def car_agent():
 
         elif roll == 3:
             log_and_print("An investigation goes critically wrong or leads to the top, ruining your career.\n")
-            if skill_check("Advocate", best_mental()):
+            if skill_check("Advocate", best_mental()) >= 8:
                 config.keep_bonus = True
                 log_and_print("Fortunately, thanks to a bit of bureaucratic know-how, you keep your benefits for the term.")
 
@@ -1040,7 +1013,7 @@ def car_agent():
             agent_mishap()
         elif roll == 3:
             log_and_print("An investigation takes on a dangerous turn.")
-            choice = safe_int_input("You must roll against one of these skills:\n1. Investigate\n2. Streetwise\n", (1, 2))
+            choice = safe_int_input("You must roll against one of these skills:\n1. Investigate\n2. Streetwise\n>", (1, 2))
             if choice == 1:
                 result = skill_check("Investigate", best_mental())
             elif choice == 2:
@@ -1051,7 +1024,7 @@ def car_agent():
                 agent_mishap()
             else:
                 bonus = safe_int_input("You succeeded and learned a few things in the process.  Raise one of the following skills:\n"
-                "1. Deception\n2. Jack of all Trades\n3. Persuade\n4. Tactics\n", (1, 4))
+                "1. Deception\n2. Jack of all Trades\n3. Persuade\n4. Tactics\n>", (1, 4))
                 if bonus == 1:
                     increase_skill("Deception")
                 elif bonus == 2:
@@ -1084,7 +1057,7 @@ def car_agent():
             log_and_print("You are sent on an undercover mision.")
             config.agent_undercover = True
             result = skill_check("Deception", best_mental())
-            career_choice = safe_int_input("Go undercover in:\n1. Rogue circles\n2. Citizen life\n", (1, 2))
+            career_choice = safe_int_input("Go undercover in:\n1. Rogue circles\n2. Citizen life\n>", (1, 2))
             if result >= 8:
                 if career_choice == 1:
                     rogue_events()
@@ -1113,20 +1086,17 @@ def car_agent():
 
         elif roll == 10:
             log_and_print("You are given specialized vehicular training.")
-            choice = safe_int_input("Choose to gain a skill at Rank 1:\n"
-            "1. Drive\n2. Flyer\n3. Pilot\n4. Gunner\n", (1, 4))
-            if choice == 1:
-                increase_skill("Drive", set_rank=1)
-            elif choice == 2:
-                increase_skill("Flyer", set_rank=1)
-            elif choice == 3:
-                increase_skill("Pilot", set_rank=1)
-            else:
-                increase_skill("Gunner", set_rank=1)
+            skill_list = ["Drive", "Flyer", "Pilot", "Gunner"]
+            number = 0
+            for skill in skill_list:
+                number += 1
+                print(f"{number}. {skill}: Current Rank {config.skills[skill]}")    
+            choice = safe_int_input("Choose to gain a skill at Rank 1:\n>", (1, number))
+            increase_skill(skill_list[choice - 1])
         
         elif roll == 11:
             log_and_print("You are befriended by a senior agent.")
-            choice = safe_int_input("Choose either:\n1. Increase Investigate by one level\n2. +4 DM to your next Advancement roll\n", (1, 2))
+            choice = safe_int_input("Choose either:\n1. Increase Investigate by one level\n2. +4 DM to your next Advancement roll\n>", (1, 2))
             if choice == 1:
                 increase_skill("Investigate")
             else:
@@ -1177,7 +1147,7 @@ def car_agent():
                     log_and_print("Your job required more than a man, so they put some extra hardware in you.")
                     config.starting_items.append("Combat Implant")
                 elif benefit == 6:
-                    choice = safe_int_input("Choose:\n1. +1 Social\n2. Combat Implant\n", (1, 2))
+                    choice = safe_int_input("Choose:\n1. +1 Social\n2. Combat Implant\n>", (1, 2))
                     if choice == 1:
                         log_and_print("You made friends in high places.")
                         increase_stat("Social Standing")
@@ -1188,24 +1158,15 @@ def car_agent():
                     tas_member()
 
     def agent_develop():
-        config.careers.append(f"Agent: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [AGENT_PERSONAL_DEVELOPMENT, AGENT_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 8:
+            tables.append(AGENT_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            AGENT_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            AGENT_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            AGENT_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
+        
 
     if not config.drafted and config.agent_terms < 1:
         qualification("Agent", "Intelligence", 6)
@@ -1220,7 +1181,7 @@ def car_agent():
         print("1. Law Enforcement, a police officer or detective.")
         print("2. Intelligence, spying for a government... maybe even your own.")
         print("3. Corporate, sniffing out the secrets of the competition.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Agent")
         if spec_choice == 1:
             config.spec_name = "Law Enforcement"
@@ -1228,21 +1189,13 @@ def car_agent():
             config.survival_tuple = ("Endurance", 6) 
             config.advancement_tuple = ("Intelligence", 6)  
             config.event_log.append(f"Term{config.terms}: Agent: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in AGENT_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
 
         if spec_choice == 2:
             config.spec_name = "Intelligence"
             config.spec_table = AGENT_INTELLIGENCE
             config.survival_tuple = ("Intelligence", 7)
             config.advancement_tuple = ("Intelligence", 5)  
-            config.event_log.append(f"Term{config.terms}: Agent: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in AGENT_SERVICE_SKILLS.values():
-                    effect() 
-                config.basic_training = False   
+            config.event_log.append(f"Term{config.terms}: Agent: {config.spec_name}")  
     
         if spec_choice == 3:
             config.spec_name = "Corporate"
@@ -1250,24 +1203,21 @@ def car_agent():
             config.survival_tuple = ("Intelligence", 5)
             config.advancement_tuple = ("Intelligence", 7)  
             config.event_log.append(f"Term{config.terms}: Agent: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in AGENT_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+
+        basic_train(AGENT_SERVICE_SKILLS)
+        config.careers.append(f"Agent: {config.spec_name}")
 
     elif config.drafted:
-            config.drafted = False
-            log_and_print("You are drafted into service as a constable; keeping the peace for the good citizens of the Empire.")
-            config.careers.append("Agent")
-            config.spec_name = "Law Enforcement"
-            config.spec_table = AGENT_LAW_ENFORCEMENT
-            config.survival_tuple = ("Endurance", 6) 
-            config.advancement_tuple = ("Intelligence", 6)  
-            config.event_log.append(f"Term{config.terms}: Agent: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in AGENT_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+        config.drafted = False
+        log_and_print("You are drafted into service as a constable; keeping the peace for the good citizens of the Empire.")
+        config.careers.append("Agent")
+        config.spec_name = "Law Enforcement"
+        config.spec_table = AGENT_LAW_ENFORCEMENT
+        config.survival_tuple = ("Endurance", 6) 
+        config.advancement_tuple = ("Intelligence", 6)  
+        config.event_log.append(f"Term{config.terms}: Agent: {config.spec_name}")
+        basic_train(AGENT_SERVICE_SKILLS)
+        config.careers.append(f"Agent: {config.spec_name}")
 
     else:
         print("You sign up for another term of intrigue.")
@@ -1320,26 +1270,7 @@ def car_agent():
                 elif config.agent_rank == 4:
                     increase_skill("Vacc Suit", set_rank=1)
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 8:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                AGENT_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                AGENT_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                AGENT_ADVANCED_EDUCATION[roll]()
+            agent_develop()
 
     config.age += 4
     check_aging()
@@ -1363,66 +1294,66 @@ def car_army():
     global available_careers
 
     ARMY_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_stat("Strength"),
-        2: lambda: increase_stat("Dexterity"),
-        3: lambda: increase_stat("Endurance"),
-        4: lambda: increase_skill("Gambler"),
-        5: lambda: increase_skill("Medic"),
-        6: lambda: increase_skill("Melee")
+        1: "Strength",
+        2: "Dexterity",
+        3: "Endurance",
+        4: "Gambler",
+        5: "Medic",
+        6: "Melee",
     }
 
     ARMY_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Drive"),
-        2: lambda: increase_skill("Athletics"),
-        3: lambda: increase_skill("Gun Combat"),
-        4: lambda: increase_skill("Recon"),
-        5: lambda: increase_skill("Melee"),
-        6: lambda: increase_skill("Heavy Weapons"),
+        1: "Drive",
+        2: "Athletics",
+        3: "Gun Combat",
+        4: "Recon",
+        5: "Melee",
+        6: "Heavy Weapons",
     }
 
     ARMY_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Comms"),
-        2: lambda: increase_skill("Sensors"),
-        3: lambda: increase_skill("Navigation"),
-        4: lambda: increase_skill("Explosives"),
-        5: lambda: increase_skill("Engineer"),
-        6: lambda: increase_skill("Survival"),
+        1: "Comms",
+        2: "Sensors",
+        3: "Navigation",
+        4: "Explosives",
+        5: "Engineer",
+        6: "Survival",
     }   
     
     ARMY_OFFICER = {
-        1: lambda: increase_skill("Tactics"),
-        2: lambda: increase_skill("Leadership"),
-        3: lambda: increase_skill("Advocate"),
-        4: lambda: increase_skill("Diplomat"),
-        5: lambda: increase_skill("Tactics"),
-        6: lambda: increase_skill("Admin"),
+        1: "Tactics",
+        2: "Leadership",
+        3: "Advocate",
+        4: "Diplomat",
+        5: "Tactics",
+        6: "Admin",
     }   
 
     ARMY_SUPPORT = {
-        1: lambda: increase_skill("Mechanic"),
-        2: lambda: increase_skill("Drive"),
-        3: lambda: increase_skill("Flyer"),
-        4: lambda: increase_skill("Explosives"),
-        5: lambda: increase_skill("Comms"),
-        6: lambda: increase_skill("Medic"),
+        1: "Mechanic",
+        2: "Drive",
+        3: "Flyer",
+        4: "Explosives",
+        5: "Comms",
+        6: "Medic",
     }
 
     ARMY_INFANTRY = {
-        1: lambda: increase_skill("Gun Combat"),
-        2: lambda: increase_skill("Melee"),
-        3: lambda: increase_skill("Heavy Weapons"),
-        4: lambda: increase_skill("Stealth"),
-        5: lambda: increase_skill("Athletics"),
-        6: lambda: increase_skill("Recon"),
+        1: "Gun Combat",
+        2: "Melee",
+        3: "Heavy Weapons",
+        4: "Stealth",
+        5: "Athletics",
+        6: "Recon",
     }
 
     ARMY_CAVALRY = {
-        1: lambda: increase_skill("Mechanic"),
-        2: lambda: increase_skill("Drive"),
-        3: lambda: increase_skill("Flyer"),
-        4: lambda: increase_skill("Recon"),
-        5: lambda: increase_skill("Gunnery"),
-        6: lambda: increase_skill("Sensors"),
+        1: "Mechanic",
+        2: "Drive",
+        3: "Flyer",
+        4: "Recon",
+        5: "Gunnery",
+        6: "Sensors",
     }
 
     ARMY_MUSTER_CASH = {
@@ -1441,7 +1372,7 @@ def car_army():
         roll = roll_1d6()
         if roll == 1:
             log_and_print(f"Severely injured in action.")
-            choice = safe_int_input("You must choose to:\n1. Accept a roll of '2' on the injury table.\n2. Roll twice and take the lower result.\n", (1, 2))
+            choice = safe_int_input("You must choose to:\n1. Accept a roll of '2' on the injury table.\n2. Roll twice and take the lower result.\n>", (1, 2))
             if choice == 1:
                 injury(2)
             else:
@@ -1494,7 +1425,7 @@ def car_army():
         elif roll == 3:
             log_and_print("You are assigned to a planet with a hostile or wild environment.")
             bonus = safe_int_input("Gain one of the following skills:\n"
-                "1. Vacc Suit 1\n2. Engineer 1\n3. Animals 1\n4. Recon 1\n", (1, 4))
+                "1. Vacc Suit 1\n2. Engineer 1\n3. Animals 1\n4. Recon 1\n>", (1, 4))
             if bonus == 1:
                 increase_skill("Vacc Suit", set_rank=1)
             elif bonus == 2:
@@ -1507,7 +1438,7 @@ def car_army():
         elif roll == 4:
             log_and_print("You are assigned to an urbanised planet torn by war.")
             bonus = safe_int_input("Gain one of the following skills:\n"
-                "1. Stealth 1\n2. Streetwise 1\n3. Persuade 1\n4. Recon 1\n", (1, 4))
+                "1. Stealth 1\n2. Streetwise 1\n3. Persuade 1\n4. Recon 1\n>", (1, 4))
             if bonus == 1:
                 increase_skill("Stealth", set_rank=1)
             elif bonus == 2:
@@ -1525,8 +1456,8 @@ def car_army():
             log_and_print("You are thrown into a brutal ground war.")
             war = config.mods["Endurance"] + roll_2d6()
             if war >= 8:
-                    bonus = safe_int_input("Gain one of the following skills:\n"
-                "1. Gun Combat\n2. Leadership\n", (1, 2))
+                    bonus = safe_int_input("Increase one of the following skills:\n"
+                "1. Gun Combat\n2. Leadership\n>", (1, 2))
                     if bonus == 1:
                         increase_skill("Gun Combat")
                     elif bonus == 2:
@@ -1553,7 +1484,7 @@ def car_army():
         elif roll == 10:
             log_and_print("You are assigned to a peacekeeping role.")
             choice = safe_int_input("Choose to gain a skill at Rank 1:\n"
-            "1. Admin\n2. Investigate\n3. Deception\n4. Recon\n", (1, 4))
+            "1. Admin\n2. Investigate\n3. Deception\n4. Recon\n>", (1, 4))
             if choice == 1:
                 increase_skill("Admin", set_rank=1)
             elif choice == 2:
@@ -1565,7 +1496,7 @@ def car_army():
         
         elif roll == 11:
             log_and_print("Your commanding officer takes an interest in your career.")
-            choice = safe_int_input("Choose either:\n1. Gain Tactics 1\n2. +4 DM to your next Advancement roll\n", (1, 2))
+            choice = safe_int_input("Choose either:\n1. Gain Tactics 1\n2. +4 DM to your next Advancement roll\n>", (1, 2))
             if choice == 1:
                 increase_skill("Tactics", set_rank=1)
             else:
@@ -1628,24 +1559,14 @@ def car_army():
                     increase_stat("Social Standing")
 
     def army_develop():
-        config.careers.append(f"Army: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [ARMY_PERSONAL_DEVELOPMENT, ARMY_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 8:
+            tables.append(ARMY_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            ARMY_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            ARMY_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            ARMY_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
     if not config.drafted and config.army_terms < 1:
         if config.age >= 30:
@@ -1664,50 +1585,32 @@ def car_army():
         print("1. Support: Doing the less glamorous work in the background.")
         print("2. Infantry: Deployed to areas requiring bullet sponges.")
         print("3. Cavalry: Riding in a tank or other ground vehicle.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Army")
         if spec_choice == 1:
             config.spec_name = "Support"
             config.spec_table = ARMY_SUPPORT
             config.survival_tuple = ("Endurance", 5) 
             config.advancement_tuple = ("Education", 7)  
-            if config.prior_careers < 1:
-                for effect in ARMY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
-
+            
         if spec_choice == 2:
             config.spec_name = "Infantry"
             config.spec_table = ARMY_INFANTRY
             config.survival_tuple = ("Strength", 6)
-            config.advancement_tuple = ("Education", 6)  
-            if config.prior_careers < 1:
-                for effect in ARMY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False    
+            config.advancement_tuple = ("Education", 6)    
     
         if spec_choice == 3:
             config.spec_name = "Cavalry"
             config.spec_table = ARMY_CAVALRY
             config.survival_tuple = ("Dexterity", 7)
             config.advancement_tuple = ("Intelligence", 5)  
-            if config.prior_careers < 1:
-                for effect in ARMY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+            
+        basic_train(ARMY_SERVICE_SKILLS)
         increase_skill("Gun Combat", set_rank=1)
+        config.careers.append(f"Army: {config.spec_name}")
 
-    if config.spec_name != "Officer":
-        print("It occurs to you that shining your own boots may be for suckers.")  
-        commission = safe_choice("Want to apply for a commission? (y/n)\n", ("y", "n"))
-        if commission == "y":
-            attempt = config.mods["Social Standing"] + roll_2d6()
-            if attempt >= 8:
-                config.spec_name = "Officer"
-                config.spec_table = ARMY_OFFICER
-                log_and_print("You become a commissioned officer.")
-            else:
-                log_and_print("Your application to officer school is filed very deeply.")
+    
+    commission(ARMY_OFFICER)
 
     print("Four years of duty await.")
     config.careers.append(f"Term{config.terms}: Army: {config.spec_name}.")
@@ -1760,26 +1663,7 @@ def car_army():
                     else:
                         config.values["Social Standing"] += 1
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 8:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                ARMY_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                ARMY_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                ARMY_ADVANCED_EDUCATION[roll]()
+            army_develop()
 
     config.age += 4
     check_aging()
@@ -1814,6 +1698,8 @@ def car_citizen():
             muster_rolls += 3
         while muster_rolls:
             print(f"You have {muster_rolls} benefit rolls remaining.")
+            if benefit_bonus:
+                print(f"You will have +{benefit_bonus[0]} to this roll.")
             muster_rolls -= 1 
             cashben = safe_int_input("Will you choose:\n1. Cash\n2. Benefits?\n", valid_range=(1, 2))
             if cashben == 1:
@@ -1850,25 +1736,14 @@ def car_citizen():
                     tas_member()
 
     def citizen_develop():
-        config.careers.append(f"Citizen: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [CITIZEN_PERSONAL_DEVELOPMENT, CITIZEN_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 10:
+            tables.append(CITIZEN_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            CITIZEN_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            CITIZEN_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            CITIZEN_ADVANCED_EDUCATION[roll]()
-
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
     if config.citizen_terms < 1:
         qualification("Citizen", "Education", 5)
 
@@ -1882,7 +1757,7 @@ def car_citizen():
         print("1. Corporate, an executive, manager, or bureaucrat.")
         print("2. Worker, somewhere between fixing warp drives and flipping burgers.")
         print("3. Colonist, living that frontier life.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Citizen")
         if spec_choice == 1:
             config.spec_name = "Corporate"
@@ -1890,10 +1765,7 @@ def car_citizen():
             config.survival_tuple = ("Social Standing", 6) 
             config.advancement_tuple = ("Intelligence", 6)  
             config.event_log.append(f"Term{config.terms}: Citizen: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in CITIZEN_CORPORATE.values():
-                    effect()
-                config.basic_training = False
+            basic_train(CITIZEN_CORPORATE)
 
         if spec_choice == 2:
             config.spec_name = "Worker"
@@ -1901,10 +1773,7 @@ def car_citizen():
             config.survival_tuple = ("Endurance", 4)
             config.advancement_tuple = ("Education", 8)  
             config.event_log.append(f"Term{config.terms}: Citizen: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in CITIZEN_WORKER.values():
-                    effect()
-                config.basic_training = False    
+            basic_train(CITIZEN_WORKER)  
     
         if spec_choice == 3:
             config.spec_name = "Colonist"
@@ -1912,10 +1781,8 @@ def car_citizen():
             config.survival_tuple = ("Intelligence", 7)
             config.advancement_tuple = ("Endurance", 5)  
             config.event_log.append(f"Term{config.terms}: Citizen: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in CITIZEN_COLONIST.values():
-                    effect()
-                config.basic_training = False
+            basic_train(CITIZEN_COLONIST)
+        config.careers.append("Citizen")
 
     else:
         print("You punch the clock for another four years.")
@@ -1984,27 +1851,7 @@ def car_citizen():
                 elif config.citizen_rank == 6:
                     increase_skill("Gun Combat", set_rank=1)
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 10:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                CITIZEN_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                CITIZEN_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                CITIZEN_ADVANCED_EDUCATION[roll]()
-
+            citizen_develop()
     config.age += 4
     check_aging()
     print(f"\n\nAfter four years as a {config.spec_name}, you are {config.age} years old and your stats are as follows:\n")
@@ -2026,57 +1873,57 @@ def car_citizen():
 def car_entertainer():
     global available_careers
     ENTERTAINER_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_stat("Dexterity"),
-        2: lambda: increase_stat("Intelligence"),
-        3: lambda: increase_stat("Social Standing"),
-        4: lambda: increase_stat("Education"),
-        5: lambda: increase_skill("Carouse"),
-        6: lambda: increase_skill("Stealth")
+        1: "Dexterity",
+        2: "Intelligence",
+        3: "Social Standing",
+        4: "Education",
+        5: "Carouse",
+        6: "Stealth",
     }
 
     ENTERTAINER_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Art"),
-        2: lambda: increase_skill("Art"),
-        3: lambda: increase_skill("Carouse"),
-        4: lambda: increase_skill("Deception"),
-        5: lambda: increase_skill("Persuade"),
-        6: lambda: increase_skill("Steward"),
+        1: "Art",
+        2: "Art",
+        3: "Carouse",
+        4: "Deception",
+        5: "Persuade",
+        6: "Steward",
     }
 
     ENTERTAINER_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Advocate"),
-        2: lambda: increase_skill("Art"),
-        3: lambda: increase_skill("Deception"),
-        4: lambda: choose_science_skill(),
-        5: lambda: increase_skill("Streetwise"),
-        6: lambda: increase_skill("Diplomat"),
+        1: "Advocate",
+        2: "Art",
+        3: "Deception",
+        4: "Any Science",
+        5: "Streetwise",
+        6: "Diplomat",
     }   
     
     ENTERTAINER_ARTIST = {
-        1: lambda: increase_skill("Art"),
-        2: lambda: increase_skill("Carouse"),
-        3: lambda: increase_skill("Computer"),
-        4: lambda: increase_skill("Gambler"),
-        5: lambda: increase_skill("Persuade"),
-        6: lambda: increase_skill("Trade"),
+        1: "Art",
+        2: "Carouse",
+        3: "Computer",
+        4: "Gambler",
+        5: "Persuade",
+        6: "Trade",
     }
 
     ENTERTAINER_JOURNALIST = {
-        1: lambda: increase_skill("Art"),
-        2: lambda: increase_skill("Comms"),
-        3: lambda: increase_skill("Computers"),
-        4: lambda: increase_skill("Investigate"),
-        5: lambda: increase_skill("Recon"),
-        6: lambda: increase_skill("Streetwise"),
+        1: "Art",
+        2: "Comms",
+        3: "Computers",
+        4: "Investigate",
+        5: "Recon",
+        6: "Streetwise",
     }
 
     ENTERTAINER_PERFORMER = {
-        1: lambda: increase_skill("Art"),
-        2: lambda: increase_skill("Athletics"),
-        3: lambda: increase_skill("Carouse"),
-        4: lambda: increase_skill("Deception"),
-        5: lambda: increase_skill("Stealth"),
-        6: lambda: increase_skill("Streetwise"),
+        1: "Art",
+        2: "Athletics",
+        3: "Carouse",
+        4: "Deception",
+        5: "Stealth",
+        6: "Streetwise",
     }
 
     ENTERTAINER_MUSTER_CASH = {
@@ -2144,7 +1991,7 @@ def car_entertainer():
                 print("Hardship is a great teacher.  Gain one of the following skills at Rank 1:")
                 print("1. Survival\n2. Pilot\n3. Persuade\n4. Streetwise\n")
                 skill_list = ["Survival", "Pilot", "Persuade", "Streetwise"]
-                choice = safe_int_input("Choose which skill, by number, to gain:\n", (1, 4))
+                choice = safe_int_input("Choose which skill, by number, to gain:\n>", (1, 4))
                 increase_skill(skill_list[choice - 1], set_rank=1)
 
         else:
@@ -2188,7 +2035,7 @@ def car_entertainer():
             log_and_print("You are a part of your homeworld's celebrity circles.")
             print("Gain one of the following at Rank 1:\n 1. Carouse\n2. Persuade\n3. Steward\n4. Or gain a Contact\n")
             skill_list = ["Carouse", "Persuade", "Steward"]
-            choice = safe_int_input("Choose which skill/contact, by number, to gain:\n", (1, 4))
+            choice = safe_int_input("Choose which skill/contact, by number, to gain:\n>", (1, 4))
             if choice < 4:
                 increase_skill(skill_list[choice - 1], set_rank=1)
             else:
@@ -2209,7 +2056,7 @@ def car_entertainer():
         elif roll == 8:
             log_and_print("You have the opportunity to criticize, or even bring down, a questionable political leader on your homeworld.")
             choice = safe_int_input("Will you choose to:\n1. Support the politician for no gain\n" \
-            "2. Get into politics at risk to yourself", (1, 2))
+            "2. Get into politics at risk to yourself\n>", (1, 2))
             if choice == 2:
                 config.enemies += 1
                 result = better_skill("Art", best_mental(), "Persuade", better_skill())
@@ -2230,7 +2077,7 @@ def car_entertainer():
             log_and_print("One of your pieces of art is stolen, and the investigation brings you into the criminal underworld.")
             skill_list = ["Streetwise", "Investigate", "Recon", "Stealth"]
             choice = safe_int_input("Gain one of the following skills at Rank 1:\n"
-            "1. Streetwise\n2. Investigate\n3. Recon\n4. Stealth\n", (1, 4))
+            "1. Streetwise\n2. Investigate\n3. Recon\n4. Stealth\n>", (1, 4))
             increase_skill(skill_list[choice - 1], set_rank=1)
         
         elif roll == 11:
@@ -2289,24 +2136,14 @@ def car_entertainer():
                     increase_stat("Education")
 
     def entertainer_develop():
-        config.careers.append(f"Entertainer: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [ENTERTAINER_PERSONAL_DEVELOPMENT, ENTERTAINER_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 10:
+            tables.append(ENTERTAINER_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            ENTERTAINER_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            ENTERTAINER_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            ENTERTAINER_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
     if config.entertainer_terms < 1:
         qualification("Entertainer", "Intelligence", 5)
@@ -2321,7 +2158,7 @@ def car_entertainer():
         print("1. Artist: Painting, sculpting, or smearing dung on things.")
         print("2. Journalist: Reporting some possibly true version of events.")
         print("3. Performer: Actor, dancer, pro-athlete, or other public performer.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Entertainer")
         if spec_choice == 1:
             config.spec_name = "Artist"
@@ -2329,21 +2166,13 @@ def car_entertainer():
             config.survival_tuple = ("Social Standing", 6) 
             config.advancement_tuple = ("Intelligence", 6)  
             config.event_log.append(f"Term{config.terms}: Entertainer: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in ENTERTAINER_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
-
+        
         if spec_choice == 2:
             config.spec_name = "Journalist"
             config.spec_table = ENTERTAINER_JOURNALIST
             config.survival_tuple = ("Education", 7)
             config.advancement_tuple = ("Intelligence", 5)  
-            config.event_log.append(f"Term{config.terms}: Entertainer: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in ENTERTAINER_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False    
+            config.event_log.append(f"Term{config.terms}: Entertainer: {config.spec_name}") 
     
         if spec_choice == 3:
             config.spec_name = "Performer"
@@ -2351,10 +2180,8 @@ def car_entertainer():
             config.survival_tuple = ("Intelligence", 5)
             config.advancement_tuple = ("Dexterity", 7)  
             config.event_log.append(f"Term{config.terms}: Entertainer: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in ENTERTAINER_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+        basic_train(ENTERTAINER_SERVICE_SKILLS)
+        config.careers.append(f"Entertainer: {config.spec_name}")
 
     else:
         print("You entertain the public for four years.")
@@ -2412,26 +2239,7 @@ def car_entertainer():
                 elif config.entertainer_rank == 5:
                     increase_stat("Social Standing")
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 10:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                ENTERTAINER_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                ENTERTAINER_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                ENTERTAINER_ADVANCED_EDUCATION[roll]()
+            entertainer_develop()
 
     config.age += 4
     check_aging()
@@ -2455,66 +2263,66 @@ def car_marines():
     global available_careers
  
     MARINES_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_stat("Strength"),
-        2: lambda: increase_stat("Dexterity"),
-        3: lambda: increase_stat("Endurance"),
-        4: lambda: increase_skill("Gambler"),
-        5: lambda: increase_skill("Melee"),
-        6: lambda: increase_skill("Melee")
+        1: "Strength",
+        2: "Dexterity",
+        3: "Endurance",
+        4: "Gambler",
+        5: "Melee",
+        6: "Melee",
     }
 
     MARINES_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Athletics"),
-        2: lambda: increase_skill("Battle Dress"),
-        3: lambda: increase_skill("Tactics"),
-        4: lambda: increase_skill("Heavy Weapons"),
-        5: lambda: increase_skill("Gun Combat"),
-        6: lambda: increase_skill("Stealth"),
+        1: "Athletics",
+        2: "Battle Dress",
+        3: "Tactics",
+        4: "Heavy Weapons",
+        5: "Gun Combat",
+        6: "Stealth",
     }
 
     MARINES_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Medic"),
-        2: lambda: increase_skill("Survival"),
-        3: lambda: increase_skill("Explosives"),
-        4: lambda: increase_skill("Engineer"),
-        5: lambda: increase_skill("Pilot"),
-        6: lambda: increase_skill("Medic"),
+        1: "Medic",
+        2: "Survival",
+        3: "Explosives",
+        4: "Engineer",
+        5: "Pilot",
+        6: "Medic",
     }   
     
     MARINES_OFFICER = {
-        1: lambda: increase_skill("Leadership"),
-        2: lambda: increase_skill("Tactics"),
-        3: lambda: increase_skill("Admin"),
-        4: lambda: increase_skill("Advocate"),
-        5: lambda: increase_skill("Battle Dress"),
-        6: lambda: increase_skill("Leadership"),
+        1: "Leadership",
+        2: "Tactics",
+        3: "Admin",
+        4: "Advocate",
+        5: "Battle Dress",
+        6: "Leadership",
     }   
 
     MARINES_SUPPORT = {
-        1: lambda: increase_skill("Comms"),
-        2: lambda: increase_skill("Mechanic"),
-        3: lambda: increase_skill("Drive"),
-        4: lambda: increase_skill("Medic"),
-        5: lambda: increase_skill("Heavy Weapons"),
-        6: lambda: increase_skill("Gun Combat"),
+        1: "Comms",
+        2: "Mechanic",
+        3: "Drive",
+        4: "Medic",
+        5: "Heavy Weapons",
+        6: "Gun Combat",
     }
 
     MARINES_STAR_MARINE = {
-        1: lambda: increase_skill("Battle Dress"),
-        2: lambda: increase_skill("Zero-G"),
-        3: lambda: increase_skill("Gunnery"),
-        4: lambda: increase_skill("Melee"),
-        5: lambda: increase_skill("Sensors"),
-        6: lambda: increase_skill("Gun Combat"),
+        1: "Battle Dress",
+        2: "Zero-G",
+        3: "Gunnery",
+        4: "Melee",
+        5: "Sensors",
+        6: "Gun Combat",
     }
 
     MARINES_GROUND_ASSAULT = {
-        1: lambda: increase_skill("Battle Dress"),
-        2: lambda: increase_skill("Heavy Weapons"),
-        3: lambda: increase_skill("Recon"),
-        4: lambda: increase_skill("Melee"),
-        5: lambda: increase_skill("Tactics"),
-        6: lambda: increase_skill("Gun Combat"),
+        1: "Battle Dress",
+        2: "Heavy Weapons",
+        3: "Recon",
+        4: "Melee",
+        5: "Tactics",
+        6: "Gun Combat",
     }
 
     MARINES_MUSTER_CASH = {
@@ -2533,7 +2341,7 @@ def car_marines():
         roll = roll_1d6()
         if roll == 1:
             log_and_print(f"Severely injured in action.")
-            choice = safe_int_input("You must choose to:\n1. Accept a roll of '2' on the injury table.\n2. Roll twice and take the lower result.\n", (1, 2))
+            choice = safe_int_input("You must choose to:\n1. Accept a roll of '2' on the injury table.\n2. Roll twice and take the lower result.\n>", (1, 2))
             if choice == 1:
                 injury(2)
             else:
@@ -2550,7 +2358,7 @@ def car_marines():
         elif roll == 3:
             log_and_print("A mission goes wrong and you are trapped behind enemy lines.")
             log_and_print("You learn a few things, but are discharged for your failure.")
-            choice = safe_int_input("Choose to improve either:\n1. Stealth\n2. Survival\n", (1, 2))
+            choice = safe_int_input("Choose to improve either:\n1. Stealth\n2. Survival\n>", (1, 2))
             if choice == 1:
                 increase_skill("Stealth")
             elif choice == 2:
@@ -2594,13 +2402,13 @@ def car_marines():
         elif roll == 3:
             log_and_print("Trapped behind enemy lines, you have to survive on your own.")
             choice = safe_int_input("Gain one of the following skills:\n"
-                "1. Survival 1\n2. Stealth 1\n3. Deception 1\n4. Streetwise 1\n", (1, 4))
+                "1. Survival 1\n2. Stealth 1\n3. Deception 1\n4. Streetwise 1\n>", (1, 4))
             skill_list = ["Survival", "Stealth", "Deception", "Streetwise"]
             increase_skill(skill_list[choice - 1], set_rank=1)
 
         elif roll == 4:
             log_and_print("You are assigned to the security staff of a space station..")
-            choice = safe_int_input("Increase one of the following skills:\n1. Vacc Suit\n2. Zero-G", (1, 2))
+            choice = safe_int_input("Increase one of the following skills:\n1. Vacc Suit\n2. Zero-G\n>", (1, 2))
             skill_list = ["Vacc Suit", "Zero-G"]
             increase_skill(skill_list[choice - 1], set_rank=1)
 
@@ -2615,7 +2423,7 @@ def car_marines():
 
         elif roll == 6:
             log_and_print("You are assigned to assault an enemy fortress.")
-            choice = safe_int_input("Will you roll for:\n1. Melee\n2.Gun Combat\n", (1, 2))
+            choice = safe_int_input("Will you roll for:\n1. Melee\n2.Gun Combat\n>", (1, 2))
             if choice == 1:
                 result = skill_check("Melee", best_of_two("Strength", "Dexterity"))
             elif choice == 2:
@@ -2627,7 +2435,7 @@ def car_marines():
                 get_mods()
             else:
                 log_and_print("The offensive is a smashing success.")
-                choice = safe_int_input("Choose a skill to increase:\n1. Tactics\n2.Leadership\n", (1, 2))
+                choice = safe_int_input("Choose a skill to increase:\n1. Tactics\n2.Leadership\n>", (1, 2))
                 skill_list = ["Tactics", "Leadership"]
                 increase_skill(skill_list[choice - 1])
 
@@ -2637,13 +2445,13 @@ def car_marines():
         elif roll == 8:
             log_and_print("You are on the front lines of a planetary assault and occupation.")
             choice = safe_int_input("Gain one of the following skills at Rank 1:\n"
-                "1. Recon 1\n2. Gun Combat 1\n3. Leadership 1\n4. Comms 1\n", (1, 4))
+                "1. Recon 1\n2. Gun Combat 1\n3. Leadership 1\n4. Comms 1\n>", (1, 4))
             skill_list = ["Recon", "Gun Combat", "Leadership", "Comms"]
             increase_skill(skill_list[choice - 1], set_rank=1)
 
         elif roll == 9:
             log_and_print("A mission goes disastrously wrong due to your commander's error or incompetence.")
-            choice = safe_int_input("Will you:\n1. Turn him in to advance your station\n2. Cover for him to gain his loyalty\n", (1, 2))
+            choice = safe_int_input("Will you:\n1. Turn him in to advance your station\n2. Cover for him to gain his loyalty\n>", (1, 2))
             if choice == 1:
                 log_and_print("You write a report that gets him in trouble and gets you two points on your performance evaluation.")
                 config.advance_bonus += 2
@@ -2657,7 +2465,7 @@ def car_marines():
         
         elif roll == 11:
             log_and_print("Your commanding officer takes an interest in your career.")
-            choice = safe_int_input("Choose either:\n1. Gain Tactics 1\n2. +4 DM to your next Advancement roll\n", (1, 2))
+            choice = safe_int_input("Choose either:\n1. Gain Tactics 1\n2. +4 DM to your next Advancement roll\n>", (1, 2))
             if choice == 1:
                 increase_skill("Tactics", set_rank=1)
             else:
@@ -2718,24 +2526,14 @@ def car_marines():
                     increase_stat("Social Standing", 2)
 
     def marines_develop():
-        config.careers.append(f"Marines: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [MARINES_PERSONAL_DEVELOPMENT, MARINES_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 8:
+            tables.append(MARINES_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            MARINES_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            MARINES_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            MARINES_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
     if not config.drafted and config.marines_terms < 1:
         if config.age >= 30:
@@ -2754,52 +2552,34 @@ def car_marines():
         print("1. Support: Doing the less glamorous work in the background.")
         print("2. Star Marine: Fighting boarding actions and capturing enemy ships.")
         print("3. Ground Assault: They kicked you out of a spacecraft and said 'capture that planet'.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Marines")
         if spec_choice == 1:
             config.spec_name = "Support"
             config.spec_table = MARINES_SUPPORT
             config.survival_tuple = ("Endurance", 5) 
             config.advancement_tuple = ("Education", 7)  
-            if config.prior_careers < 1:
-                for effect in MARINES_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
 
         if spec_choice == 2:
             config.spec_name = "Star Marine"
             config.spec_table = MARINES_STAR_MARINE
             config.survival_tuple = ("Endurance", 6)
             config.advancement_tuple = ("Education", 6)  
-            if config.prior_careers < 1:
-                for effect in MARINES_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False    
-    
+
         if spec_choice == 3:
             config.spec_name = "Ground Assault"
             config.spec_table = MARINES_GROUND_ASSAULT
             config.survival_tuple = ("Endurance", 7)
-            config.advancement_tuple = ("Education", 5)  
-            if config.prior_careers < 1:
-                for effect in MARINES_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
-        choice = safe_int_input("Gain a skill at Rank 1:\n1. Melee\n2. Gun Combat\n", (1, 2))
+            config.advancement_tuple = ("Education", 5) 
+
+        config.careers.append(f"Marines: {config.spec_name}")
+        basic_train(MARINES_SERVICE_SKILLS)
+        choice = safe_int_input("Gain a skill at Rank 1:\n1. Melee\n2. Gun Combat\n>", (1, 2))
         skill_list = ["Melee", "Gun Combat"]
         increase_skill(skill_list[choice - 1], set_rank=1)
 
-    if config.spec_name != "Officer":
-        print("It occurs to you that shining your own boots may be for suckers.")  
-        commission = safe_choice("Want to apply for a commission? (y/n)\n", ("y", "n"))
-        if commission == "y":
-            attempt = config.mods["Social Standing"] + roll_2d6()
-            if attempt >= 8:
-                config.spec_name = "Officer"
-                config.spec_table = MARINES_OFFICER
-                log_and_print("You become a commissioned officer.")
-            else:
-                log_and_print("Your application to officer school is filed very deeply.")
+    
+    commission(MARINES_OFFICER)
 
     print("Four years of duty await.")
     config.careers.append(f"Term{config.terms}: Marines: {config.spec_name}.")
@@ -2854,26 +2634,7 @@ def car_marines():
                     else:
                         config.values["Social Standing"] += 1
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 8:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                MARINES_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                MARINES_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                MARINES_ADVANCED_EDUCATION[roll]()
+            marines_develop()
 
     config.age += 4
     check_aging()
@@ -2899,57 +2660,57 @@ def car_merchants():
     global available_careers
 
     MERCHANTS_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_stat("Strength"),
-        2: lambda: increase_stat("Dexterity"),
-        3: lambda: increase_stat("Endurance"),
-        4: lambda: increase_stat("Intelligence"),
-        5: lambda: increase_skill("Melee"),
-        6: lambda: increase_skill("Streetwise"),
+        1: "Strength",
+        2: "Dexterity",
+        3: "Endurance",
+        4: "Intelligence",
+        5: "Melee",
+        6: "Streetwise",
     }
 
     MERCHANTS_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Drive"),
-        2: lambda: increase_skill("Vacc Suit"),
-        3: lambda: increase_skill("Broker"),
-        4: lambda: increase_skill("Steward"),
-        5: lambda: increase_skill("Comms"),
-        6: lambda: increase_skill("Persuade"),
+        1: "Drive",
+        2: "Vacc Suit",
+        3: "Broker",
+        4: "Steward",
+        5: "Comms",
+        6: "Persuade",
     }
 
     MERCHANTS_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Social Sciences"),
-        2: lambda: increase_skill("Astrogation"),
-        3: lambda: increase_skill("Computers"),
-        4: lambda: increase_skill("Pilot"),
-        5: lambda: increase_skill("Admin"),
-        6: lambda: increase_skill("Advocate"),
+        1: "Social Sciences",
+        2: "Astrogation",
+        3: "Computers",
+        4: "Pilot",
+        5: "Admin",
+        6: "Advocate",
     }   
     
     MERCHANTS_MERCHANT_MARINE = {
-        1: lambda: increase_skill("Pilot"),
-        2: lambda: increase_skill("Vacc Suit"),
-        3: lambda: increase_skill("Zero-G"),
-        4: lambda: increase_skill("Mechanic"),
-        5: lambda: increase_skill("Engineer"),
-        6: lambda: increase_skill("Gunner"),
+        1: "Pilot",
+        2: "Vacc Suit",
+        3: "Zero-G",
+        4: "Mechanic",
+        5: "Engineer",
+        6: "Gunner",
     }
 
     MERCHANTS_FREE_TRADER = {
-        1: lambda: increase_skill("Pilot"),
-        2: lambda: increase_skill("Vacc Suit"),
-        3: lambda: increase_skill("Zero-G"),
-        4: lambda: increase_skill("Mechanic"),
-        5: lambda: increase_skill("Engineer"),
-        6: lambda: increase_skill("Sensors"),
+        1: "Pilot",
+        2: "Vacc Suit",
+        3: "Zero-G",
+        4: "Mechanic",
+        5: "Engineer",
+        6: "Sensors",
     }
 
     MERCHANTS_BROKER = {
-        1: lambda: increase_skill("Admin"),
-        2: lambda: increase_skill("Advocate"),
-        3: lambda: increase_skill("Broker"),
-        4: lambda: increase_skill("Streetwise"),
-        5: lambda: increase_skill("Deception"),
-        6: lambda: increase_skill("Persuade"),
+        1: "Admin",
+        2: "Advocate",
+        3: "Broker",
+        4: "Streetwise",
+        5: "Deception",
+        6: "Persuade",
     }
 
     MERCHANTS_MUSTER_CASH = {
@@ -2977,7 +2738,7 @@ def car_merchants():
 
         elif roll == 3:
             log_and_print("A sudden war destroys your trade routes and contacts, forcing you to flee that region of space.")
-            choice = safe_int_input("Choose to gain:\n1. Gun Combat\n2. Pilot\n", (1, 2))
+            choice = safe_int_input("Choose to gain:\n1. Gun Combat\n2. Pilot\n>", (1, 2))
             skill_list = ["Gun Combat", "Pilot"]
             increase_skill(skill_list[choice - 1])
 
@@ -3015,7 +2776,7 @@ def car_merchants():
             merchants_mishap()
         elif roll == 3:
             log_and_print("You are offered an opportunity to smuggle illegal items onto a planet.")
-            choice = safe_choice("Do you accept the offer? (y/n)\n", ("y", "n"))
+            choice = safe_choice("Do you accept the offer? (y/n)\n>", ("y", "n"))
             if choice == "y":
                 skill = safe_int_input("Roll:\n1. Deception\n2. Persuade")
                 skill_list = ["Deception", "Persuade"]
@@ -3032,13 +2793,13 @@ def car_merchants():
             
         elif roll == 4:
             log_and_print("You learn a lot from your time with suppliers and spacers.")
-            choice = safe_int_input("Gain one of the following at Rank 1:\n1. Trade\n2. Engineer\n3. Animals\n4. Social Sciences", (1, 4))
+            choice = safe_int_input("Gain one of the following at Rank 1:\n1. Trade\n2. Engineer\n3. Animals\n4. Social Sciences\n>", (1, 4))
             skill_list = ["Trade", "Engineer", "Animals", "Social Sciences"]
             increase_skill(skill_list[choice - 1], set_rank=1)            
 
         elif roll == 5:
             log_and_print("You get the opportunity to gamble your fortune on a potentially lucrative deal.")
-            choice = safe_choice("Will you risk your benefits? (y/n)\n", ("y", "n"))
+            choice = safe_choice("Will you risk your benefits? (y/n)\n>", ("y", "n"))
             if choice == "y":
                 benefits = config.merchants_terms
                 if config.merchants_rank == 1 or config.merchants_rank == 2:
@@ -3049,7 +2810,7 @@ def car_merchants():
                     benefits += 3
                 choice = safe_int_input(f"You have {benefits} benefit rolls to gamble.\nChoose how many: ", (1, benefits))
                 skill_list = ["Gambler", "Broker"]
-                skill = safe_int_input("Roll:\n1. Gambler\n2. Broker\n", (1, 2))
+                skill = safe_int_input("Roll:\n1. Gambler\n2. Broker\n>", (1, 2))
                 result = skill_check(skill_list[skill - 1], best_mental())
                 if result >= 8:
                     config.merchants_terms += math.ceil(choice / 2)
@@ -3074,7 +2835,7 @@ def car_merchants():
             skill_list = ["Advocate","Admin", "Diplomat", "Investigate"]
             print(f"You currently have:\nAdvocate: {skills["Advocate"]}, Admin: {skills["Admin"]}\n"
                   f"Diplomat: {skills["Diplomat"]}, Investigate: {skills["Investigate"]}\n")
-            choice = safe_int_input("Choose a skill to gain at Rank 1:\n1. Advocate\n2. Admin\n3. Diplomat\n4. Investigate\n", (1, 4))
+            choice = safe_int_input("Choose a skill to gain at Rank 1:\n1. Advocate\n2. Admin\n3. Diplomat\n4. Investigate\n>", (1, 4))
             increase_skill(skill_list[choice - 1], set_rank=1)
 
         elif roll == 9:
@@ -3092,7 +2853,7 @@ def car_merchants():
         elif roll == 11:
             log_and_print("You befriend a useful ally.")
             config.allies += 1
-            choice = safe_int_input("Choose either:\n1. Increase Carouse by one level\n2. +4 DM to your next Advancement roll\n", (1, 2))
+            choice = safe_int_input("Choose either:\n1. Increase Carouse by one level\n2. +4 DM to your next Advancement roll\n>", (1, 2))
             if choice == 1:
                 increase_skill("Carouse")
             else:
@@ -3157,24 +2918,14 @@ def car_merchants():
                         log_and_print("You leverage your stake to get two, more flexible, Ship Shares.")
 
     def merchants_develop():
-        config.careers.append(f"Merchants: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [MERCHANTS_PERSONAL_DEVELOPMENT, MERCHANTS_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 8:
+            tables.append(MERCHANTS_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            MERCHANTS_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            MERCHANTS_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            MERCHANTS_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
     if not config.drafted and "Merchants" not in config.careers:
         qualification("Merchants", "Intelligence", 4)
@@ -3189,40 +2940,28 @@ def car_merchants():
         print("1. Merchant Marine, guarding cargo against pirates and boredom.")
         print("2. Free Trader, hauling freight between stars.")
         print("3. Broker, wheeling and dealing.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Merchants")
         if spec_choice == 1:
             config.spec_name = "Merchant Marine"
             config.spec_table = MERCHANTS_MERCHANT_MARINE
             config.survival_tuple = ("Education", 5) 
             config.advancement_tuple = ("Intelligence", 7)  
-            config.event_log.append(f"Term{config.terms}: Merchants: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in MERCHANTS_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
 
         if spec_choice == 2:
             config.spec_name = "Free Trader"
             config.spec_table = MERCHANTS_FREE_TRADER
             config.survival_tuple = ("Dexterity", 6)
             config.advancement_tuple = ("Intelligence", 6)  
-            config.event_log.append(f"Term{config.terms}: Merchants: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in MERCHANTS_SERVICE_SKILLS.values():
-                    effect() 
-                config.basic_training = False   
-    
+            
         if spec_choice == 3:
             config.spec_name = "Broker"
             config.spec_table = MERCHANTS_BROKER
             config.survival_tuple = ("Education", 5)
             config.advancement_tuple = ("Intelligence", 7)  
-            config.event_log.append(f"Term{config.terms}: Merchants: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in MERCHANTS_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+            
+        config.event_log.append(f"Term{config.terms}: Merchants: {config.spec_name}")    
+        basic_train(MERCHANTS_SERVICE_SKILLS)
 
     elif config.drafted:
             config.drafted = False
@@ -3233,10 +2972,7 @@ def car_merchants():
             config.survival_tuple = ("Education", 5) 
             config.advancement_tuple = ("Intelligence", 7)    
             config.event_log.append(f"Term{config.terms}: Merchants: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in MERCHANTS_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+            basic_train(MERCHANTS_SERVICE_SKILLS)
 
     else:
         print("You sign up for another term of space capitalism.")
@@ -3290,26 +3026,7 @@ def car_merchants():
                 elif config.merchants_rank == 3:
                     increase_skill("Streetwise", set_rank=1)
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 8:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                MERCHANTS_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                MERCHANTS_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                MERCHANTS_ADVANCED_EDUCATION[roll]()
+            merchants_develop()
 
     config.age += 4
     check_aging()
@@ -3333,66 +3050,66 @@ def car_navy():
     global available_careers
     
     NAVY_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_stat("Strength"),
-        2: lambda: increase_stat("Dexterity"),
-        3: lambda: increase_stat("Endurance"),
-        4: lambda: increase_stat("Intelligence"),
-        5: lambda: increase_stat("Education"),
-        6: lambda: increase_stat("Social Standing")
+        1: "Strength",
+        2: "Dexterity",
+        3: "Endurance",
+        4: "Intelligence",
+        5: "Education",
+        6: "Social Standing",
     }
 
     NAVY_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Pilot"),
-        2: lambda: increase_skill("Vacc Suit"),
-        3: lambda: increase_skill("Zero-G"),
-        4: lambda: increase_skill("Gunner"),
-        5: lambda: increase_skill("Mechanic"),
-        6: lambda: increase_skill("Gun Combat"),
+        1: "Pilot",
+        2: "Vacc Suit",
+        3: "Zero-G",
+        4: "Gunner",
+        5: "Mechanic",
+        6: "Gun Combat",
     }
 
     NAVY_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Remote Operations"),
-        2: lambda: increase_skill("Astrogation"),
-        3: lambda: increase_skill("Engineer"),
-        4: lambda: increase_skill("Computers"),
-        5: lambda: increase_skill("Navigation"),
-        6: lambda: increase_skill("Admin"),
+        1: "Remote Operations",
+        2: "Astrogation",
+        3: "Engineer",
+        4: "Computers",
+        5: "Navigation",
+        6: "Admin",
     }   
     
     NAVY_OFFICER = {
-        1: lambda: increase_skill("Leadership"),
-        2: lambda: increase_skill("Tactics"),
-        3: lambda: increase_skill("Pilot"),
-        4: lambda: increase_skill("Melee"),
-        5: lambda: increase_skill("Admin"),
-        6: lambda: increase_skill("Tactics"),
+        1: "Leadership",
+        2: "Tactics",
+        3: "Pilot",
+        4: "Melee",
+        5: "Admin",
+        6: "Tactics",
     }   
 
     NAVY_CREW = {
-        1: lambda: increase_skill("Comms"),
-        2: lambda: increase_skill("Mechanic"),
-        3: lambda: increase_skill("Gun Combat"),
-        4: lambda: increase_skill("Sensors"),
-        5: lambda: increase_skill("Melee"),
-        6: lambda: increase_skill("Vacc Suit"),
+        1: "Comms",
+        2: "Mechanic",
+        3: "Gun Combat",
+        4: "Sensors",
+        5: "Melee",
+        6: "Vacc Suit",
     }
 
     NAVY_ENG_GUN = {
-        1: lambda: increase_skill("Engineer"),
-        2: lambda: increase_skill("Mechanic"),
-        3: lambda: increase_skill("Sensors"),
-        4: lambda: increase_skill("Engineer"),
-        5: lambda: increase_skill("Gunner"),
-        6: lambda: increase_skill("Computers"),
+        1: "Engineer",
+        2: "Mechanic",
+        3: "Sensors",
+        4: "Engineer",
+        5: "Gunner",
+        6: "Computers",
     }
 
     NAVY_FLIGHT = {
-        1: lambda: increase_skill("Pilot"),
-        2: lambda: increase_skill("Flyer"),
-        3: lambda: increase_skill("Gunner"),
-        4: lambda: increase_skill("Pilot"),
-        5: lambda: increase_skill("Astrogation"),
-        6: lambda: increase_skill("Zero-G"),
+        1: "Pilot",
+        2: "Flyer",
+        3: "Gunner",
+        4: "Pilot",
+        5: "Astrogation",
+        6: "Zero-G",
     }
 
     NAVY_MUSTER_CASH = {
@@ -3411,7 +3128,7 @@ def car_navy():
         roll = roll_1d6()
         if roll == 1:
             log_and_print(f"Severely injured in action.")
-            choice = safe_int_input("You must choose to:\n1. Accept a roll of '2' on the injury table.\n2. Roll twice and take the lower result.\n", (1, 2))
+            choice = safe_int_input("You must choose to:\n1. Accept a roll of '2' on the injury table.\n2. Roll twice and take the lower result.\n>", (1, 2))
             if choice == 1:
                 injury(2)
             else:
@@ -3427,19 +3144,19 @@ def car_navy():
         elif roll == 3:
             log_and_print("During a battle, defeat or victory depends on your actions.")
             if config.spec_name == "Engineer/Gunner":
-                choice = safe_int_input("Roll:\n1. Sensors\n2. Gunner\n", (1, 2))
+                choice = safe_int_input("Roll:\n1. Sensors\n2. Gunner\n>", (1, 2))
                 if choice == 1:
                     result = skill_check("Sensors", best_mental())
                 else:
                     result = skill_check("Gunner", "Dexterity")
             elif config.spec_name == "Crew":
-                choice = safe_int_input("Roll:\n1. Mechanic\n2. Vacc Suit\n", (1, 2))
+                choice = safe_int_input("Roll:\n1. Mechanic\n2. Vacc Suit\n>", (1, 2))
                 if choice == 1:
                     result = skill_check("Mechanic", best_mental())
                 else:
                     result = skill_check("Vacc Suit", best_physical())
             elif config.spec_name == "Pilot":
-                choice = safe_int_input("Roll:\n1. Pilot\n2. Tactics\n", (1, 2))
+                choice = safe_int_input("Roll:\n1. Pilot\n2. Tactics\n>", (1, 2))
                 if choice == 1:
                     result = skill_check("Pilot", best_of_two("Dexterity", "Intelligence"))
                 else:
@@ -3452,16 +3169,16 @@ def car_navy():
 
         elif roll == 4:
             log_and_print("You are blamed for an accident that causes the death of several crew members.")
-            choice = safe_choice("Was it your fault? (y/n)", ("y", "n"))
+            choice = safe_choice("Was it your fault? (y/n)\n>", ("y", "n"))
             if choice == "y":
                 print("Your guilt drives you to excel.  Take an extra roll on one of the skill tables.")
                 if values["Education"] >= 8:
                     print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                    choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
+                    choice = safe_int_input("1, 2, 3, or 4?\n>", (1, 4))
 
                 else:
                     print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                    choice = safe_int_input("1, 2, or 3?\n", (1, 3))
+                    choice = safe_int_input("1, 2, or 3?\n>", (1, 3))
                 roll = roll_1d6()
                 if choice == 1:
                     NAVY_PERSONAL_DEVELOPMENT[roll]()
@@ -3505,11 +3222,11 @@ def car_navy():
             navy_mishap()
         elif roll == 3:
             log_and_print("You join a gambling circle on board.")
-            choice = safe_int_input("Gain one of the following skills:\n"
-                "1. Gambler 1\n2. Deception 1", (1, 2))
+            choice = safe_int_input(f"Gain one of the following skills at Rank 1:\n>"
+                f"1. Gambler: Current Rank {skills["Gambler"]}\n2. Deception: Current Rank {skills["Deception"]}\n>", (1, 2))
             skill_list = ["Gambler", "Deception"]
             increase_skill(skill_list[choice - 1], set_rank=1)
-            choice = safe_choice("Would you like to wager one of your benefit rolls? (y/n)\n", ("y", "n"))
+            choice = safe_choice("Would you like to wager one of your benefit rolls? (y/n)\n>", ("y", "n"))
             if choice == "y":
                 result = skill_check("Gambler", best_mental())
                 if result >= 8:
@@ -3534,7 +3251,7 @@ def car_navy():
 
         elif roll == 6:
             log_and_print("Your vessel participates in a notable military engagement.")
-            choice = safe_int_input("Choose a skill to gain at Rank 1:\n1. Sensors\n2. Engineer\n3. Gunnery\n4. Pilot\n", (1, 4))
+            choice = safe_int_input("Choose a skill to gain at Rank 1:\n1. Sensors\n2. Engineer\n3. Gunnery\n4. Pilot\n>", (1, 4))
             skill_list = ["Sensors", "Engineer", "Gunnery", "Pilot"]
             increase_skill(skill_list[choice - 1], set_rank=1)
 
@@ -3544,7 +3261,7 @@ def car_navy():
         elif roll == 8:
             log_and_print("Your vessel participates in a diplomatic mission.")
             choice = safe_int_input("Gain one of the following skills at Rank 1:\n"
-                "1. Recon 1\n2. Diplomat 1\n3. Steward 1\n4. Or gain a Contact\n", (1, 4))
+                "1. Recon 1\n2. Diplomat 1\n3. Steward 1\n4. Or gain a Contact\n>", (1, 4))
             if choice < 4:
                 skill_list = ["Recon", "Diplomat", "Steward"]
                 increase_skill(skill_list[choice - 1], set_rank=1)
@@ -3560,7 +3277,7 @@ def car_navy():
 
         elif roll == 10:
             log_and_print("You have the opportunity to abuse your position for profit.")
-            choice = safe_choice("Will you:\n1. Do crimes for profit\n2. Refuse and be recognized for your service\n", (1, 2))
+            choice = safe_choice("Will you:\n1. Do crimes for profit\n2. Refuse and be recognized for your service\n>", (1, 2))
             if choice == 1:
                 config.navy_terms += 1
                 log_and_print("You make an illicit profit.")
@@ -3570,7 +3287,7 @@ def car_navy():
         
         elif roll == 11:
             log_and_print("Your commanding officer takes an interest in your career.")
-            choice = safe_int_input("Choose either:\n1. Gain Tactics 1\n2. +4 DM to your next Advancement roll\n", (1, 2))
+            choice = safe_int_input("Choose either:\n1. Gain Tactics 1\n2. +4 DM to your next Advancement roll\n>", (1, 2))
             if choice == 1:
                 increase_skill("Tactics", set_rank=1)
             else:
@@ -3609,7 +3326,7 @@ def car_navy():
                 
                 if benefit == 1:
                     if "Air/Raft" not in config.starting_items:
-                        choice = safe_int_input("Choose to gain:\n1. An air/raft vehicle\n2. One ship share\n", (1, 2))
+                        choice = safe_int_input("Choose to gain:\n1. An air/raft vehicle\n2. One ship share\n>", (1, 2))
                         if choice == 1:
                             config.starting_items.append("Air/Raft")
                         else:
@@ -3621,7 +3338,7 @@ def car_navy():
                     increase_stat("Intelligence")
                     update_char()
                 elif benefit == 3:
-                    choice = safe_int_input("Choose:\n1. +1 Education\n2. 2 Ship Shares", (1, 2))
+                    choice = safe_int_input("Choose:\n1. +1 Education\n2. 2 Ship Shares\n>", (1, 2))
                     if choice == 1:
                         log_and_print("You stayed awake during a few of your classes.")
                         increase_stat("Education")
@@ -3634,7 +3351,7 @@ def car_navy():
                 elif benefit == 5:
                     tas_member()
                 elif benefit == 6:
-                    choice = safe_int_input("Choose:\n1. Ship's Boat\n2. 2 Ship Shares", (1, 2))
+                    choice = safe_int_input("Choose:\n1. Ship's Boat\n2. 2 Ship Shares\n>", (1, 2))
                     if choice == 1:
                         log_and_print("You gain a Ship's Boat.")
                         config.starting_items.append("Ship's Boat")
@@ -3646,24 +3363,14 @@ def car_navy():
                     increase_stat("Social Standing", 2)
 
     def navy_develop():
-        config.careers.append(f"Navy: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [NAVY_PERSONAL_DEVELOPMENT, NAVY_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 8:
+            tables.append(NAVY_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            NAVY_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            NAVY_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            NAVY_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
     if not config.drafted and config.navy_terms < 1:
         if config.age >= 34:
@@ -3682,49 +3389,29 @@ def car_navy():
         print("1. Line/Crew: A typical generalist naval career.")
         print("2. Engineer/Gunnery: Working wrenches and/or turrets.")
         print("3. Flight: You've listened to a lot of Kenny Loggins in the cockpit.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Navy")
         if spec_choice == 1:
             config.spec_name = "Crew"
             config.spec_table = NAVY_CREW
             config.survival_tuple = ("Intelligence", 5) 
             config.advancement_tuple = ("Education", 7)  
-            if config.prior_careers < 1:
-                for effect in NAVY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
-
+            
         if spec_choice == 2:
             config.spec_name = "Engineer/Gunnery"
             config.spec_table = NAVY_ENG_GUN
             config.survival_tuple = ("Intelligence", 6)
-            config.advancement_tuple = ("Education", 6)  
-            if config.prior_careers < 1:
-                for effect in NAVY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False    
+            config.advancement_tuple = ("Education", 6)   
     
         if spec_choice == 3:
             config.spec_name = "Pilot"
             config.spec_table = NAVY_FLIGHT
             config.survival_tuple = ("Dexterity", 7)
             config.advancement_tuple = ("Education", 5)  
-            if config.prior_careers < 1:
-                for effect in NAVY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
 
-    if config.spec_name != "Officer":
-        print("It occurs to you that shining your own boots may be for suckers.")  
-        commission = safe_choice("Want to apply for a commission? (y/n)\n", ("y", "n"))
-        if commission == "y":
-            attempt = config.mods["Social Standing"] + roll_2d6()
-            if attempt >= 8:
-                config.spec_name = "Officer"
-                config.spec_table = NAVY_OFFICER
-                log_and_print("You become a commissioned officer.")
-            else:
-                log_and_print("Your application to officer school is filed very deeply.")
+        basic_train(NAVY_SERVICE_SKILLS)
+
+    commission(NAVY_OFFICER)
 
     print("Four years of duty await.")
     config.careers.append(f"Term{config.terms}: Navy: {config.spec_name}.")
@@ -3779,26 +3466,7 @@ def car_navy():
                     else:
                         config.values["Social Standing"] += 1
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 8:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                NAVY_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                NAVY_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                NAVY_ADVANCED_EDUCATION[roll]()
+            navy_develop()
 
     config.age += 4
     check_aging()
@@ -3824,57 +3492,57 @@ def car_nobility():
     global available_careers
 
     NOBILITY_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_skill("Carouse"),
-        2: lambda: increase_stat("Education"),
-        3: lambda: increase_skill("Deception"),
-        4: lambda: increase_stat("Dexterity"),
-        5: lambda: increase_skill("Melee"),
-        6: lambda: increase_stat("Social Standing")
+        1: "Carouse",
+        2: "Education",
+        3: "Deception",
+        4: "Dexterity",
+        5: "Melee",
+        6: "Social Standing",
     }
 
     NOBILITY_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Admin"),
-        2: lambda: increase_skill("Advocate"),
-        3: lambda: increase_skill("Comms"),
-        4: lambda: increase_skill("Steward"),
-        5: lambda: increase_skill("Diplomat"),
-        6: lambda: increase_skill("Persuade"),
+        1: "Admin",
+        2: "Advocate",
+        3: "Comms",
+        4: "Steward",
+        5: "Diplomat",
+        6: "Persuade",
     }
 
     NOBILITY_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Admin"),
-        2: lambda: increase_skill("Advocate"),
-        3: lambda: increase_skill("Language"),
-        4: lambda: increase_skill("Leader"),
-        5: lambda: increase_skill("Diplomat"),
-        6: lambda: increase_skill("Computers"),
+        1: "Admin",
+        2: "Advocate",
+        3: "Language",
+        4: "Leader",
+        5: "Diplomat",
+        6: "Computers",
     }   
     
     NOBILITY_ADMINISTRATOR = {
-        1: lambda: increase_skill("Admin"),
-        2: lambda: increase_skill("Advocate"),
-        3: lambda: increase_skill("Broker"),
-        4: lambda: increase_skill("Diplomat"),
-        5: lambda: increase_skill("Leader"),
-        6: lambda: increase_skill("Persuade"),
+        1: "Admin",
+        2: "Advocate",
+        3: "Broker",
+        4: "Diplomat",
+        5: "Leader",
+        6: "Persuade",
     }
 
     NOBILITY_DIPLOMAT = {
-        1: lambda: increase_skill("Advocate"),
-        2: lambda: increase_skill("Carouse"),
-        3: lambda: increase_skill("Comms"),
-        4: lambda: increase_skill("Steward"),
-        5: lambda: increase_skill("Diplomat"),
-        6: lambda: increase_skill("Deception"),
+        1: "Advocate",
+        2: "Carouse",
+        3: "Comms",
+        4: "Steward",
+        5: "Diplomat",
+        6: "Deception",
     }
 
     NOBILITY_DILETTANTE = {
-        1: lambda: increase_skill("Carouse"),
-        2: lambda: increase_skill("Deception"),
-        3: lambda: increase_skill("Flyer"),
-        4: lambda: increase_skill("Streetwise"),
-        5: lambda: increase_skill("Gambler"),
-        6: lambda: increase_skill("Jack of all Trades"),
+        1: "Carouse",
+        2: "Deception",
+        3: "Flyer",
+        4: "Streetwise",
+        5: "Gambler",
+        6: "Jack of all Trades",
     }
 
     NOBILITY_MUSTER_CASH = {
@@ -3902,7 +3570,7 @@ def car_nobility():
 
         elif roll == 3:
             log_and_print("Disaster or war strikes.")
-            choice = safe_int_input("Choose a skill to escape with:\n1. Stealth\n2. Deception\n", (1, 2))
+            choice = safe_int_input("Choose a skill to escape with:\n1. Stealth\n2. Deception\n>", (1, 2))
             if choice == 1:
                 result = skill_check("Stealth", "Dexterity")
             else:
@@ -3914,7 +3582,7 @@ def car_nobility():
 
         elif roll == 4:
             log_and_print("Political manoeuverings usurp your position.  Gain a Rival.")
-            choice = safe_int_input("Choose to advance:\n1. Diplomat\n2. Advocate\n", (1, 2))
+            choice = safe_int_input("Choose to advance:\n1. Diplomat\n2. Advocate\n>", (1, 2))
             skill_list = ["Diplomat", "Advocate"]
             increase_skill(skill_list[choice - 1])
 
@@ -3953,7 +3621,7 @@ def car_nobility():
             nobility_mishap()
         elif roll == 3:
             log_and_print("You are challenged to a duel for your honour and standing.")
-            choice = safe_choice("Do you accept? (y/n)\n", ("y", "n"))
+            choice = safe_choice("Do you accept? (y/n)\n>", ("y", "n"))
             if choice == "n":
                 log_and_print("Your cowardice becomes the talk of the town.")
                 config.values["Social Standing"] -= 1
@@ -3973,7 +3641,7 @@ def car_nobility():
         elif roll == 4:
             log_and_print("Your time as a ruler or playboy gives you a wide range of experiences.")
             choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Animals ({config.skills["Animals"]})\n2. Art ({config.skills["Art"]})\n"
-                                    f"3. Carouse ({config.skills["Carouse"]})\n4. Streetwise ({config.skills["Streetwise"]}\n)", (1, 4))
+                                    f"3. Carouse ({config.skills["Carouse"]})\n4. Streetwise ({config.skills["Streetwise"]})\n>", (1, 4))
             skill_list = ["Animals", "Art", "Carouse", "Streetwise"]
             increase_skill(skill_list[choice - 1], set_rank=1)
 
@@ -3983,7 +3651,7 @@ def car_nobility():
 
         elif roll == 6:
             log_and_print("You become a player in the intrigues of your local government.  You gain a Rival, but also knowledge.")
-            choice = safe_int_input("Increase one of the following skills:\n1. Advocate\n2. Admin\n3. Diplomat\n4. Persuade\n", (1, 4))
+            choice = safe_int_input("Increase one of the following skills:\n1. Advocate\n2. Admin\n3. Diplomat\n4. Persuade\n>", (1, 4))
             skill_list = ["Advocate", "Admin", "Diplomat", "Persuade"]
             increase_skill(skill_list[choice - 1])
 
@@ -3992,7 +3660,7 @@ def car_nobility():
 
         elif roll == 8:
             log_and_print("A conspiracy of nobles attempts to recruit you.")
-            choice = safe_choice("Do you join in their scheme? (y/n)", ("y", "n"))
+            choice = safe_choice("Do you join in their scheme? (y/n)\n>", ("y", "n"))
             if choice == "n":
                 log_and_print("You assert your loyalty and gain an Enemy.")
                 config.enemies += 1
@@ -4002,7 +3670,7 @@ def car_nobility():
                 result = skill_check(skill_list[choice - 1], best_mental())
                 if result >= 8:
                     log_and_print("You successfully advance the goals of the conspiracy.")
-                    choice = safe_int_input("Advance one of the following skills:\n1. Deception\n2. Persuade\n3. Tactics\n4. Carouse\n", (1, 4))
+                    choice = safe_int_input("Advance one of the following skills:\n1. Deception\n2. Persuade\n3. Tactics\n4. Carouse\n>", (1, 4))
                     skill_list = ["Deception", "Persuade", "Tactics", "Carouse"]
                     increase_skill(skill_list[choice - 1])
                 else:
@@ -4021,13 +3689,13 @@ def car_nobility():
             config.allies += 1
             skill_list = ["Carouse", "Diplomat", "Persuade", "Steward"]
             choice = safe_int_input("Increase one of the following skills:\n"
-            "1. Carouse\n2. Diplomat\n3. Persuade\n4. Steward\n", (1, 4))
+            "1. Carouse\n2. Diplomat\n3. Persuade\n4. Steward\n>", (1, 4))
             increase_skill(skill_list[choice - 1])
         
         elif roll == 11:
             log_and_print("You make an alliance with a powerful and charismatic noble.")
             config.allies += 1
-            choice = safe_int_input("Choose either:\n1. Increase Leadership\n2. +4 DM to your next Advancement roll\n", (1, 2))
+            choice = safe_int_input("Choose either:\n1. Increase Leadership\n2. +4 DM to your next Advancement roll\n>", (1, 2))
             if choice == 1:
                 increase_skill("Leadership")
             else:
@@ -4077,7 +3745,7 @@ def car_nobility():
                 elif benefit == 5:
                     tas_member()
                 elif benefit == 6:
-                    choice = safe_int_input("Choose:\n1. 5 Ship Shares towards a Luxury Yacht\n2. 2 more flexible Ship Shares\n", (1, 2))
+                    choice = safe_int_input("Choose:\n1. 5 Ship Shares towards a Luxury Yacht\n2. 2 more flexible Ship Shares\n>", (1, 2))
                     if choice == 1:
                         config.ship_shares += 5
                         log_and_print("You gain five Ship Shares in a Luxury Yacht.")
@@ -4087,7 +3755,7 @@ def car_nobility():
                 elif benefit == 7:
                     log_and_print("You move up in the world.")
                     increase_stat("Social Standing")
-                    choice = safe_int_input("Choose:\n1. 5 Ship Shares towards a Luxury Yacht\n2. 2 more flexible Ship Shares\n", (1, 2))
+                    choice = safe_int_input("Choose:\n1. 5 Ship Shares towards a Luxury Yacht\n2. 2 more flexible Ship Shares\n>", (1, 2))
                     if choice == 1:
                         config.ship_shares += 5
                         log_and_print("You gain five Ship Shares in a Luxury Yacht.")
@@ -4096,24 +3764,14 @@ def car_nobility():
                         log_and_print("You made a few investments and gained two Ship Shares")
 
     def nobility_develop():
-        config.careers.append(f"Nobility: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [NOBILITY_PERSONAL_DEVELOPMENT, NOBILITY_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 8:
+            tables.append(NOBILITY_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            NOBILITY_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            NOBILITY_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            NOBILITY_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
     config.qual = True
     if config.nobility_terms < 1 and config.values["Social Standing"] < 10:
@@ -4129,40 +3787,28 @@ def car_nobility():
         print("1. Administrator, serving as a functionary or ruler of a small domain.")
         print("2. Diplomat, carrying missives and soothing tempers.")
         print("3. Dilettante, wandering about with a trust fund.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Nobility")
         if spec_choice == 1:
             config.spec_name = "Administrator"
             config.spec_table = NOBILITY_ADMINISTRATOR
             config.survival_tuple = ("Intelligence", 4) 
             config.advancement_tuple = ("Education", 6)  
-            config.event_log.append(f"Term{config.terms}: Nobility: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in NOBILITY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
 
         if spec_choice == 2:
             config.spec_name = "Diplomat"
             config.spec_table = NOBILITY_DIPLOMAT
             config.survival_tuple = ("Intelligence", 5)
-            config.advancement_tuple = ("Social Standing", 7)  
-            config.event_log.append(f"Term{config.terms}: Nobility: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in NOBILITY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False    
+            config.advancement_tuple = ("Social Standing", 7)    
     
         if spec_choice == 3:
             config.spec_name = "Dilettante"
             config.spec_table = NOBILITY_DILETTANTE
             config.survival_tuple = ("Social Standing", 3)
             config.advancement_tuple = ("Intelligence", 8)  
-            config.event_log.append(f"Term{config.terms}: Nobility: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in NOBILITY_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+            
+        basic_train(NOBILITY_SERVICE_SKILLS)
+        config.event_log.append(f"Term{config.terms}: Nobility: {config.spec_name}")
 
     else:
         print("You bask in adulation for another four years.")
@@ -4218,26 +3864,7 @@ def car_nobility():
                 elif config.nobility_rank == 6:
                     increase_skill("Jack of all Trades", set_rank=1)
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 8:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                NOBILITY_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                NOBILITY_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                NOBILITY_ADVANCED_EDUCATION[roll]()
+            nobility_develop()
 
     config.age += 4
     check_aging()
@@ -4313,24 +3940,15 @@ def car_rogue():
                         log_and_print("You make a few investments and get two Ship Shares.")
 
     def rogue_develop():
-        config.careers.append(f"Rogue: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [ROGUE_PERSONAL_DEVELOPMENT, ROGUE_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-        if config.values["Education"] >= 8:
+        if config.values["Education"] >= 10:
+            tables.append(ROGUE_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            ROGUE_PERSONAL_DEVELOPMENT[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
-        elif choice == 2:
-            ROGUE_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            ROGUE_ADVANCED_EDUCATION[roll]()
 
     config.qual = True
     if config.rogue_terms < 1:
@@ -4346,18 +3964,13 @@ def car_rogue():
         print("1. Thief, stealing from the whoever and giving to you.")
         print("2. Enforcer, breaking legs or whatever else needed breaking.")
         print("3. Pirate, plundering space ships and watching illicitly copied movies.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Rogue")
         if spec_choice == 1:
             config.spec_name = "Thief"
             config.spec_table = ROGUE_THIEF
             config.survival_tuple = ("Intelligence", 6) 
             config.advancement_tuple = ("Dexterity", 6)  
-            config.event_log.append(f"Term{config.terms}: Rogue: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in ROGUE_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
 
         if spec_choice == 2:
             config.spec_name = "Enforcer"
@@ -4365,21 +3978,15 @@ def car_rogue():
             config.survival_tuple = ("Endurance", 6)
             config.advancement_tuple = ("Strength", 6)  
             config.event_log.append(f"Term{config.terms}: Rogue: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in ROGUE_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False    
-    
+            
         if spec_choice == 3:
             config.spec_name = "Pirate"
             config.spec_table = ROGUE_PIRATE
             config.survival_tuple = ("Dexterity", 6)
             config.advancement_tuple = ("Intelligence", 6   )  
-            config.event_log.append(f"Term{config.terms}: Rogue: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in ROGUE_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+            
+        basic_train(ROGUE_SERVICE_SKILLS)
+        config.event_log.append(f"Term{config.terms}: Rogue: {config.spec_name}")
 
     else:
         print("You break the law for another four years.")
@@ -4438,7 +4045,7 @@ def car_rogue():
                     increase_skill("Persuade", set_rank=1)
                 elif config.rogue_rank == 3:
                     choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Melee: Current ({config.skills["Melee"]})\n"
-                                            f"2. Gun Combat: Current ({config.skills["Gun Combat"]})\n", (1,2))
+                                            f"2. Gun Combat: Current ({config.skills["Gun Combat"]})\n>", (1,2))
                     skill_list = ["Melee", "Gun Combat"]
                     increase_skill(skill_list[choice - 1], set_rank=1)
                 elif config.rogue_rank == 5:
@@ -4446,40 +4053,21 @@ def car_rogue():
             elif config.spec_name == "Pirate":
                 if config.rogue_rank == 1:
                     choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Pilot: Current ({config.skills["Pilot"]})\n"
-                                            f"2. Gunner: Current ({config.skills["Gunner"]})\n", (1,2))
+                                            f"2. Gunner: Current ({config.skills["Gunner"]})\n>", (1,2))
                     skill_list = ["Pilot", "Gunner"]
                     increase_skill(skill_list[choice - 1], set_rank=1)
                 elif config.rogue_rank == 3:
                     choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Melee: Current ({config.skills["Melee"]})\n"
-                                            f"2. Gun Combat: Current ({config.skills["Gun Combat"]})\n", (1,2))
+                                            f"2. Gun Combat: Current ({config.skills["Gun Combat"]})\n>", (1,2))
                     skill_list = ["Melee", "Gun Combat"]
                     increase_skill(skill_list[choice - 1], set_rank=1)
                 elif config.rogue_rank == 5:
                     choice = safe_int_input(f"Gain a skill at Rank 1:\n1. Engineer: Current ({config.skills["Engineer"]})\n"
-                                            f"2. Navigation: Current ({config.skills["Navigation"]})", (1,2))
+                                            f"2. Navigation: Current ({config.skills["Navigation"]})\n>", (1,2))
                     skill_list = ["Engineer", "Navigation"]
                     increase_skill(skill_list[choice - 1], set_rank=1)
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 10:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                ROGUE_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                ROGUE_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                ROGUE_ADVANCED_EDUCATION[roll]()
+            rogue_develop()
 
     config.age += 4
     check_aging()
@@ -4507,57 +4095,57 @@ def car_rogue():
 def car_scholar():
     global available_careers
     SCHOLAR_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_stat("Intelligence"),
-        2: lambda: increase_stat("Education"),
-        3: lambda: increase_stat("Social Standing"),
-        4: lambda: increase_stat("Dexterity"),
-        5: lambda: increase_stat("Endurance"),
-        6: lambda: increase_skill("Computers")
+        1: "Intelligence",
+        2: "Education",
+        3: "Social Standing",
+        4: "Dexterity",
+        5: "Endurance",
+        6: "Computers",
     }
 
     SCHOLAR_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Comms"),
-        2: lambda: increase_skill("Computers"),
-        3: lambda: increase_skill("Diplomat"),
-        4: lambda: increase_skill("Medic"),
-        5: lambda: increase_skill("Investigate"),
-        6: lambda: choose_science_skill(),
+        1: "Comms",
+        2: "Computers",
+        3: "Diplomat",
+        4: "Medic",
+        5: "Investigate",
+        6: "Any Science",
     }
 
     SCHOLAR_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Art"),
-        2: lambda: increase_skill("Advocate"),
-        3: lambda: increase_skill("Computers"),
-        4: lambda: increase_skill("Language"),
-        5: lambda: increase_skill("Engineer"),
-        6: lambda: choose_science_skill(),
+        1: "Art",
+        2: "Advocate",
+        3: "Computers",
+        4: "Language",
+        5: "Engineer",
+        6: "Any Science",
     }   
     
     SCHOLAR_FIELD_RESEARCHER = {
-        1: lambda: increase_skill("Sensors"),
-        2: lambda: increase_skill("Diplomat"),
-        3: lambda: increase_skill("Language"),
-        4: lambda: increase_skill("Survival"),
-        5: lambda: increase_skill("Investigate"),
-        6: lambda: choose_science_skill(),
+        1: "Sensors",
+        2: "Diplomat",
+        3: "Language",
+        4: "Survival",
+        5: "Investigate",
+        6: "Any Science",
     }
 
     SCHOLAR_SCIENTIST = {
-        1: lambda: increase_skill("Admin"),
-        2: lambda: increase_skill("Engineer"),
-        3: lambda: choose_science_skill(),
-        4: lambda: increase_skill("Sensors"),
-        5: lambda: increase_skill("Computers"),
-        6: lambda: choose_science_skill(),
+        1: "Admin",
+        2: "Engineer",
+        3: "Any Science",
+        4: "Sensors",
+        5: "Computers",
+        6: "Any Science",
     }
 
     SCHOLAR_PHYSICIAN = {
-        1: lambda: increase_skill("Medic"),
-        2: lambda: increase_skill("Comms"),
-        3: lambda: increase_skill("Investigate"),
-        4: lambda: increase_skill("Medic"),
-        5: lambda: increase_skill("Persuade"),
-        6: lambda: choose_science_skill(),
+        1: "Medic",
+        2: "Comms",
+        3: "Investigate",
+        4: "Medic",
+        5: "Persuade",
+        6: "Any Science",
     }
 
     SCHOLAR_MUSTER_CASH = {
@@ -4649,7 +4237,7 @@ def car_scholar():
             scholar_mishap()
         elif roll == 3:
             log_and_print("You are called upon to do research that goes against your conscience.")
-            choice = safe_choice("Do you accept the offer? (y/n)\n", ("y", "n"))
+            choice = safe_choice("Do you accept the offer? (y/n)\n>", ("y", "n"))
             if choice == "y":
                 log_and_print("You find your morals flexible and your knife sharp.")
                 roll = roll_1d3()
@@ -4659,12 +4247,12 @@ def car_scholar():
                 skill_list = ["Physical Sciences", "Life Sciences", "Social Sciences", "Space Sciences"]
                 for num in range(1, len(skill_list) + 1):
                     print(f"{num}. {skill_list[num - 1]}")
-                choice = safe_int_input("Which skill will you advance?\n", (1, 4))
+                choice = safe_int_input("Which skill will you advance?\n>", (1, 4))
                 increase_skill(skill_list[choice - 1])
                 skill_list.remove(skill_list[choice - 1])
                 for num in range(1, len(skill_list) + 1):
                     print(f"{num}. {skill_list[num - 1]}")
-                    choice = safe_int_input("Choose a second skill to advance:\n", (1, 3))
+                    choice = safe_int_input("Choose a second skill to advance:\n>", (1, 3))
                     increase_skill(skill_list[choice - 1])
             else:
                 log_and_print("You take the unprofitable path of virtue.")
@@ -4675,7 +4263,7 @@ def car_scholar():
             print("Choose a skill to gain at Rank 1")
             for num in range(1, len(skill_list) + 1):
                 print(f"{num}. {skill_list[num - 1]}")
-            choice = safe_int_input("Which skill?\n", (1, 5))
+            choice = safe_int_input("Which skill?\n>", (1, 5))
             if choice == 2:
                 choose_science_skill(set_rank=1)
             else:
@@ -4700,7 +4288,7 @@ def car_scholar():
             log_and_print("You have the opportunity to cheat in some fashion, advancing your career and research\n"
             "by stealing another's work.")
             choice = safe_int_input("Will you choose to:\n1. Be honest.\n" \
-            "2. Be a greedy research thief.", (1, 2))
+            "2. Be a greedy research thief.\n>", (1, 2))
             if choice == 2:
                 config.enemies += 1
                 result = better_skill("Deception", best_mental(), "Admin", best_mental())
@@ -4720,12 +4308,12 @@ def car_scholar():
             log_and_print("You become entangled in a bureaucratic or legal morass that distracts you from your work.")
             skill_list = ["Admin", "Advocate", "Persuade", "Diplomat"]
             choice = safe_int_input("Gain one of the following skills at Rank 1:\n"
-            "1. Admin\n2. Advocate\n3. Persuade\n4. Diplomat\n", (1, 4))
+            "1. Admin\n2. Advocate\n3. Persuade\n4. Diplomat\n>", (1, 4))
             increase_skill(skill_list[choice - 1], set_rank=1)
         
         elif roll == 11:
             log_and_print("You work for an eccentric, but brilliant, mentor who becomes an Ally.")
-            choice = safe_int_input("Choose:\n1. Increase any Science skill\n2. Get +4 to your next Advancement roll\n", (1, 2))
+            choice = safe_int_input("Choose:\n1. Increase any Science skill\n2. Get +4 to your next Advancement roll\n>", (1, 2))
             if choice == 1:
                 choose_science_skill()
             else:
@@ -4777,7 +4365,7 @@ def car_scholar():
                     config.starting_items.append("Scientific Equipment")
                 elif benefit == 6:
                     log_and_print("You were offered a stake in a Lab Ship, or two more flexible Ship Shares.")
-                    choice = safe_int_input("Will you take:\n1. 5 Lab Ship Shares\n2. 2 general Ship Shares", (1, 2))
+                    choice = safe_int_input("Will you take:\n1. 5 Lab Ship Shares\n2. 2 general Ship Shares\n>", (1, 2))
                     if choice == 1:
                         log_and_print("You accept the 5% stake in a Lab Ship")
                         config.ship_shares += 5
@@ -4786,7 +4374,7 @@ def car_scholar():
                         config.ship_shares += 2
                 elif benefit == 7:
                     log_and_print("You were offered a stake in a Lab Ship, or two more flexible Ship Shares.")
-                    choice = safe_int_input("Will you take:\n1. 5 Lab Ship Shares\n2. 2 general Ship Shares", (1, 2))
+                    choice = safe_int_input("Will you take:\n1. 5 Lab Ship Shares\n2. 2 general Ship Shares\n>", (1, 2))
                     if choice == 1:
                         log_and_print("You accept the 5% stake in a Lab Ship")
                         config.ship_shares += 5
@@ -4795,24 +4383,14 @@ def car_scholar():
                         config.ship_shares += 2
 
     def scholar_develop():
-        config.careers.append(f"Scholar: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [SCHOLAR_PERSONAL_DEVELOPMENT, SCHOLAR_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 10:
+            tables.append(SCHOLAR_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            SCHOLAR_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            SCHOLAR_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            SCHOLAR_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
     if config.scholar_terms < 1:
         qualification("Scholar", "Intelligence", 6)
@@ -4827,40 +4405,29 @@ def car_scholar():
         print("1. Field Researcher: Doing hands on research in laboratories and the wilderness.")
         print("2. Scientist: You didn't like leaving your lab.")
         print("3. Physician: Healing everyone, including thyself.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Scholar")
         if spec_choice == 1:
             config.spec_name = "Field Researcher"
             config.spec_table = SCHOLAR_FIELD_RESEARCHER
             config.survival_tuple = ("Endurance", 6) 
             config.advancement_tuple = ("Intelligence", 6)  
-            config.event_log.append(f"Term{config.terms}: Scholar: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in SCHOLAR_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
 
         if spec_choice == 2:
             config.spec_name = "Scientist"
             config.spec_table = SCHOLAR_SCIENTIST
             config.survival_tuple = ("Education", 4)
             config.advancement_tuple = ("Intelligence", 8)  
-            config.event_log.append(f"Term{config.terms}: Scholar: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in SCHOLAR_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False    
     
         if spec_choice == 3:
             config.spec_name = "Physician"
             config.spec_table = SCHOLAR_PHYSICIAN
             config.survival_tuple = ("Education", 4)
             config.advancement_tuple = ("Education", 8)  
-            config.event_log.append(f"Term{config.terms}: Scholar: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in SCHOLAR_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+            
+        basic_train(SCHOLAR_SERVICE_SKILLS)
+        config.careers.append("Scholar")
+        config.event_log.append(f"Term{config.terms}: Scholar: {config.spec_name}")
 
     else:
         print("You spend four more years with a microscope.")
@@ -4916,26 +4483,7 @@ def car_scholar():
                 elif config.scholar_rank == 5:
                     increase_skill("Social Sciences", set_rank=1)
 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 10:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                SCHOLAR_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                SCHOLAR_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                SCHOLAR_ADVANCED_EDUCATION[roll]()
+            scholar_develop()
 
     config.age += 4
     check_aging()
@@ -4958,57 +4506,57 @@ def car_scholar():
 def car_scout():
     global available_careers
     SCOUT_PERSONAL_DEVELOPMENT = {
-        1: lambda: increase_stat("Strength"),
-        2: lambda: increase_stat("Dexterity"),
-        3: lambda: increase_stat("Endurance"),
-        4: lambda: increase_stat("Intelligence"),
-        5: lambda: increase_stat("Education"),
-        6: lambda: increase_skill("Jack of all Trades"),
+        1: "Strength",
+        2: "Dexterity",
+        3: "Endurance",
+        4: "Intelligence",
+        5: "Education",
+        6: "Jack of all Trades",
     }
 
     SCOUT_SERVICE_SKILLS = {
-        1: lambda: increase_skill("Pilot"),
-        2: lambda: increase_skill("Survival"),
-        3: lambda: increase_skill("Mechanic"),
-        4: lambda: increase_skill("Astrogation"),
-        5: lambda: increase_skill("Comms"),
-        6: lambda: increase_skill("Gun Combat"),
+        1: "Pilot",
+        2: "Survival",
+        3: "Mechanic",
+        4: "Astrogation",
+        5: "Comms",
+        6: "Gun Combat",
     }
 
     SCOUT_ADVANCED_EDUCATION = {
-        1: lambda: increase_skill("Medic"),
-        2: lambda: increase_skill("Navigation"),
-        3: lambda: increase_skill("Engineer"),
-        4: lambda: increase_skill("Computers"),
-        5: lambda: increase_skill("Space Science"),
-        6: lambda: increase_skill("Jack of all Trades"),
+        1: "Medic",
+        2: "Navigation",
+        3: "Engineer",
+        4: "Computers",
+        5: "Space Science",
+        6: "Jack of all Trades",
     }   
     
     SCOUT_COURIER = {
-        1: lambda: increase_skill("Comms"),
-        2: lambda: increase_skill("Sensors"),
-        3: lambda: increase_skill("Pilot"),
-        4: lambda: increase_skill("Vacc Suit"),
-        5: lambda: increase_skill("Zero-G"),
-        6: lambda: increase_skill("Astrogation"),
+        1: "Comms",
+        2: "Sensors",
+        3: "Pilot",
+        4: "Vacc Suit",
+        5: "Zero-G",
+        6: "Astrogation",
     }
 
     SCOUT_SURVEY = {
-        1: lambda: increase_skill("Sensors"),
-        2: lambda: increase_skill("Persuade"),
-        3: lambda: increase_skill("Pilot"),
-        4: lambda: increase_skill("Navigation"),
-        5: lambda: increase_skill("Diplomat"),
-        6: lambda: increase_skill("Streetwise"),
+        1: "Sensors",
+        2: "Persuade",
+        3: "Pilot",
+        4: "Navigation",
+        5: "Diplomat",
+        6: "Streetwise",
     }
 
     SCOUT_EXPLORATION = {
-        1: lambda: increase_skill("Sensors"),
-        2: lambda: increase_skill("Pilot"),
-        3: lambda: increase_skill("Pilot"),
-        4: lambda: increase_skill("Life Sciences"),
-        5: lambda: increase_skill("Stealth"),
-        6: lambda: increase_skill("Recon"),
+        1: "Sensors",
+        2: "Pilot",
+        3: "Pilot",
+        4: "Life Sciences",
+        5: "Stealth",
+        6: "Recon",
     }
 
     SCOUT_MUSTER_CASH = {
@@ -5027,7 +4575,7 @@ def car_scout():
         roll = roll_1d6()
         if roll == 1:
             log_and_print("Severly injured in action.")
-            choice = safe_int_input("Choose:\n1. Take a result of '2' on the Injury table\n2. Roll twice and accept the lower result\n", (1, 2))
+            choice = safe_int_input("Choose:\n1. Take a result of '2' on the Injury table\n2. Roll twice and accept the lower result\n>", (1, 2))
             if choice == 1:
                 injury(2)
             else:
@@ -5035,7 +4583,7 @@ def car_scout():
 
         elif roll == 2:
             log_and_print("Psychologically damaged by your time in the scouts.")
-            choice = safe_int_input("Choose to reduce:\n1. Intelligence\n2. Social Standing\n", (1, 2))
+            choice = safe_int_input("Choose to reduce:\n1. Intelligence\n2. Social Standing\n>", (1, 2))
             if choice == 1:
                 config.values["Intelligence"] -= 1
             else:
@@ -5086,8 +4634,8 @@ def car_scout():
         elif roll == 3:
             log_and_print("Your ship is ambushed by enemy vessels.")
             config.enemies += 1
-            choice = safe_int_input("Choose:\n1. A piloting check to escape\n2. A difficult attempt to persuade the attackers", (1, 2))
-            if choice == "1":
+            choice = safe_int_input("Choose:\n1. A piloting check to escape\n2. A difficult attempt to persuade the attackers\n>", (1, 2))
+            if choice == 1:
                 roll = skill_check("Pilot", "Dexterity")
                 if roll >= 8:
                     log_and_print("You successfully escaped, but gained an Enemy.")
@@ -5110,7 +4658,7 @@ def car_scout():
             print("Choose a skill to gain at Rank 1")
             for num in range(1, len(skill_list) + 1):
                 print(f"{num}. {skill_list[num - 1]}: Currently {config.skills[skill_list[num - 1]]}")
-            choice = safe_int_input("Which skill?\n", (1, 4))
+            choice = safe_int_input("Which skill?\n>", (1, 4))
             increase_skill(skill_list[choice - 1], set_rank=1)
 
         elif roll == 5:
@@ -5123,7 +4671,7 @@ def car_scout():
             print("Choose a skill to gain at Rank 1")
             for num in range(1, len(skill_list) + 1):
                 print(f"{num}. {skill_list[num - 1]}: Currently {config.skills[skill_list[num - 1]]}")
-            choice = safe_int_input("Which skill?\n", (1, 4))
+            choice = safe_int_input("Which skill?\n>", (1, 4))
             increase_skill(skill_list[choice - 1], set_rank=1)
 
         elif roll == 7:
@@ -5166,7 +4714,7 @@ def car_scout():
         
         elif roll == 11:
             log_and_print("You deliver an important message for the Imperium.")
-            choice = safe_int_input("Choose:\n1. Gain a level of Diplomat\n2. Get +4 to your next Advancement roll\n", (1, 2))
+            choice = safe_int_input("Choose:\n1. Gain a level of Diplomat\n2. Get +4 to your next Advancement roll\n>", (1, 2))
             if choice == 1:
                 increase_skill("Diplomat")
             else:
@@ -5224,24 +4772,14 @@ def car_scout():
                         config.ship_shares += shares
 
     def scout_develop():
-        config.careers.append(f"Scout: {config.spec_name}")
         print("Choose a table to advance your skills:\n")
+        tables = [SCOUT_PERSONAL_DEVELOPMENT, SCOUT_SERVICE_SKILLS, config.spec_table]
         print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
         if config.values["Education"] >= 8:
+            tables.append(SCOUT_ADVANCED_EDUCATION)
             print("4. Advanced Education\n")
-        choice = safe_int_input("Your choice?\n", (1, 4))
-        roll = roll_1d6()
-        if choice == 1:
-            SCOUT_PERSONAL_DEVELOPMENT[roll]()
-
-        elif choice == 2:
-            SCOUT_SERVICE_SKILLS[roll]()
-
-        elif choice == 3:
-            config.spec_table[roll]()
-
-        else:
-            SCOUT_ADVANCED_EDUCATION[roll]()
+        choice = safe_int_input("Your choice?\n>", (1, len(tables)))
+        table_roll(tables[choice - 1])
 
     if not config.drafted and config.scout_terms < 1:
         qualification("Scout", "Intelligence", 5)
@@ -5256,40 +4794,30 @@ def car_scout():
         print("1. Courier: Serving lonely duty on the X-boat network, carrying messages for the Imperium.")
         print("2. Survey: You visited border worlds and assessed their worth.")
         print("3. Explorer: Boldly going where no man has come back from.")
-        spec_choice = safe_int_input("Choose: 1/2/3?\n", (1, 3))
+        spec_choice = safe_int_input("Choose: 1/2/3?\n>", (1, 3))
         config.careers.append("Scout")
         if spec_choice == 1:
             config.spec_name = "Courier"
             config.spec_table = SCOUT_COURIER
             config.survival_tuple = ("Endurance", 5) 
             config.advancement_tuple = ("Education", 9)  
-            config.event_log.append(f"Term{config.terms}: Scout: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in SCOUT_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
 
         if spec_choice == 2:
             config.spec_name = "Survey"
             config.spec_table = SCOUT_SURVEY
             config.survival_tuple = ("Endurance", 6)
-            config.advancement_tuple = ("Intelligence", 8)  
-            config.event_log.append(f"Term{config.terms}: Scout: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in SCOUT_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False    
+            config.advancement_tuple = ("Intelligence", 8)    
     
         if spec_choice == 3:
             config.spec_name = "Exploration"
             config.spec_table = SCOUT_EXPLORATION
             config.survival_tuple = ("Endurance", 7)
             config.advancement_tuple = ("Education", 7)  
-            config.event_log.append(f"Term{config.terms}: Scout: {config.spec_name}")
-            if config.prior_careers < 1:
-                for effect in SCOUT_SERVICE_SKILLS.values():
-                    effect()
-                config.basic_training = False
+            
+            
+        basic_train(SCOUT_SERVICE_SKILLS)
+        config.careers.append("Scout")
+        config.event_log.append(f"Term{config.terms}: Scout: {config.spec_name}")
 
     else:
         print("You sign up for four more years among the stars.")
@@ -5329,27 +4857,7 @@ def car_scout():
             elif config.scout_rank == 3:
                 increase_skill("Pilot", set_rank=1)
                 
-            print("Choose a table to advance your skills:\n")
-            if values["Education"] >= 8:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}\n4. Advanced Education\n")
-                choice = safe_int_input("1, 2, 3, or 4?\n", (1, 4))
-
-            else:
-                print(f"1. Personal Development\n2. Service Skills\n3. Specialist: {config.spec_name}")
-                choice = safe_int_input("1, 2, or 3?\n", (1, 3))
-            roll = roll_1d6()
-            if choice == 1:
-                SCOUT_PERSONAL_DEVELOPMENT[roll]()
-
-            elif choice == 2:
-                SCOUT_SERVICE_SKILLS[roll]()
-
-            elif choice == 3:
-                config.spec_table[roll]()
-
-            elif choice == 4:
-                SCOUT_ADVANCED_EDUCATION[roll]()
-
+            scout_develop()
     config.age += 4
     check_aging()
     print(f"\n\nAfter four years as a {config.spec_name}, you are {config.age} years old and your stats are as follows:\n")
