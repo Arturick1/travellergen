@@ -687,10 +687,10 @@ def increase_skill(skill, set_rank=None):
 
     return skills
 
-def increase_any_skill(setrank=None):
+def increase_any_skill(set_rank=None):
     number = 0
     skill_list = []
-    if setrank is not None:
+    if set_rank is not None:
         for skill, value in skills.items():
             if not value:
                 number += 1
@@ -700,11 +700,11 @@ def increase_any_skill(setrank=None):
         number += 1
         print(f"{number}: {skill}: {value}")
         skill_list.append(skill)
-    if not setrank:
+    if not set_rank:
         choice = safe_int_input("Choose which skill, by number, to improve:\n>", (1, number))
     else:
-        choice = safe_int_input(f"Choose which skill, by number, to gain at Rank {setrank}:\n>", (1, number))
-    increase_skill(skill_list[choice - 1], setrank)
+        choice = safe_int_input(f"Choose which skill, by number, to gain at Rank {set_rank}:\n>", (1, number))
+    increase_skill(skill_list[choice - 1], set_rank)
 
 def increase_existing_skill():
     print("You may improve a skill you already have.")

@@ -4252,8 +4252,8 @@ def car_scholar():
                 skill_list.remove(skill_list[choice - 1])
                 for num in range(1, len(skill_list) + 1):
                     print(f"{num}. {skill_list[num - 1]}")
-                    choice = safe_int_input("Choose a second skill to advance:\n>", (1, 3))
-                    increase_skill(skill_list[choice - 1])
+                choice = safe_int_input("Choose a second skill to advance:\n>", (1, 3))
+                increase_skill(skill_list[choice - 1])
             else:
                 log_and_print("You take the unprofitable path of virtue.")
             

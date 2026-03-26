@@ -56,7 +56,7 @@ def main():
     print_stats()
 
     while True:
-        reroll = input("Would you like to reroll these stats?(y/n)\n").strip().lower()
+        reroll = input("Would you like to reroll these stats?(y/n)\n>").strip().lower()
         if reroll == "y":
             roll_stats()
             get_mods()
