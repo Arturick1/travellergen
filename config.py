@@ -846,22 +846,31 @@ def best_of_two(stat1, stat2):
     return best
 
 def choose_science_skill(set_rank=None):
-    print("Choose which Science skill to improve:")
-    print("1. Physical Sciences")
-    print("2. Life Sciences")
-    print("3. Social Sciences")
-    print("4. Space Sciences")
-    
-    choice = safe_int_input("1–4?\n>", (1, 4))
+    number = 0
+    print("Choose a science skill:")
     science_skills = [
         "Physical Sciences",
         "Life Sciences",
         "Social Sciences",
         "Space Sciences"
     ]
+    for skill in science_skills:
+        number += 1
+        print(f"{number}: {skill}.  Current: {skills[skill]}")
+
+    choice = safe_int_input("1–4?\n>", (1, 4))
     selected = science_skills[choice - 1]
     increase_skill(selected, set_rank)
     event_log.append(f"Increased {selected} via Science (any)")
+    
+def list_skills(skill_list):
+    number = 0
+    for skill in skill_list:
+        number += 1
+        if skill == "Any Science":
+            print(f"{number}: Any Science")
+        else:
+            print(f"{number}: {skill}.  Current: {skills[skill]}")
 
 def tas_member():
     global ship_shares
