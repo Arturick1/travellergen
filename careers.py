@@ -1046,17 +1046,15 @@ def car_agent():
                 if career_choice == 1:
                     rogue_events()
                     table_list = [ROGUE_THIEF, ROGUE_ENFORCER, ROGUE_PIRATE]
-                    choice = safe_int_input("Select a skill table to roll on:\n1. Thief\n2. Enforcer\n3. Pirate", (1, 3))
-                    table = table_list[choice - 1]
-                    roll = roll_1d6()
-                    table[roll]()
+                    choice = safe_int_input("Select a skill table to roll on:\n1. Thief\n2. Enforcer\n3. Pirate\n>", (1, 3))
+                    table_roll(table_list[choice - 1])
+                    
                 else:
                     citizen_events()
                     table_list = [CITIZEN_CORPORATE, CITIZEN_WORKER, CITIZEN_COLONIST]
                     choice = safe_int_input("Select a skill table to roll on:\n1. Corporate\n2. Worker\n3. Colonist", (1, 3))
-                    table = table_list[choice - 1]
-                    roll = roll_1d6()
-                    table[roll]()
+                    table_roll(table_list[choice - 1])
+                    
             else:
                 config.not_ejected = True
                 if career_choice == 1:
